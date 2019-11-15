@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641287, b: 0.5748173, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -592,6 +592,7 @@ MonoBehaviour:
   mATK: 6
   mDEF: 1
   mHEAL: 3
+  mCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!23 &331752521
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -701,6 +702,7 @@ MonoBehaviour:
   mATK: 3
   mDEF: 1
   mHEAL: 6
+  mCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!23 &345155220
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -915,6 +917,7 @@ MonoBehaviour:
   mATK: 1
   mDEF: 6
   mHEAL: 3
+  mCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!23 &409991104
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1039,8 +1042,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 67
-  orthographic: 1
+  field of view: 83
+  orthographic: 0
   orthographic size: 12.7
   m_Depth: -1
   m_CullingMask:
@@ -1064,13 +1067,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.29779145, y: 0, z: 0, w: 0.954631}
-  m_LocalPosition: {x: 0, y: 14.7, z: -22.9}
+  m_LocalRotation: {x: 0.44931892, y: 0, z: 0, w: 0.89337146}
+  m_LocalPosition: {x: 0, y: 10.7, z: -19.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 34.65, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 53.4, y: 0, z: 0}
 --- !u!1 &534966477
 GameObject:
   m_ObjectHideFlags: 0
@@ -1787,6 +1790,7 @@ MonoBehaviour:
   mATK: 3
   mDEF: 6
   mHEAL: 1
+  mCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!23 &1064418563
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2105,6 +2109,7 @@ MonoBehaviour:
   mATK: 1
   mDEF: 3
   mHEAL: 6
+  mCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!23 &1144056032
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2631,6 +2636,7 @@ MonoBehaviour:
   mATK: 6
   mDEF: 3
   mHEAL: 1
+  mCurrentPos: {x: 0, y: 0, z: 0}
 --- !u!23 &1749445733
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2865,7 +2871,6 @@ GameObject:
   - component: {fileID: 2008887248}
   - component: {fileID: 2008887252}
   - component: {fileID: 2008887251}
-  - component: {fileID: 2008887250}
   - component: {fileID: 2008887249}
   m_Layer: 0
   m_Name: BerserkerIcon
@@ -2889,21 +2894,7 @@ Transform:
   m_Father: {fileID: 1132964253}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &2008887249
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2008887247}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2008887250
+--- !u!114 &2008887249
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2912,12 +2903,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2008887247}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4feed577ebde2ad4cae28f718cdc3b4b, type: 3}
+  m_Script: {fileID: 11500000, guid: c0ad1c1775af74923b59e8f9b06ead14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mATK: 6
-  mDEF: 3
-  mHEAL: 1
 --- !u!23 &2008887251
 MeshRenderer:
   m_ObjectHideFlags: 0
