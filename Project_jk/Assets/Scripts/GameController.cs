@@ -9,6 +9,9 @@ public class GameController : MonoBehaviour
     private PlayerController[] mPlayerController;
 
     [SerializeField]
+    private Transform[] mWaitingTable;
+
+    [SerializeField]
     private StateController[] mStateControl;
 
     private Monster mMonster;
@@ -19,6 +22,11 @@ public class GameController : MonoBehaviour
     void Start()
     {   
         mMonster = GameObject.FindGameObjectWithTag("Monster").GetComponent<Monster>();
+
+        for(int i = 0; i < mPlayerController.Length; i++)
+        {
+            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * 1.5f;
+        }
 
         if (mTurnExitBtn != null)
             mTurnExitBtn.onClick.AddListener(() => {

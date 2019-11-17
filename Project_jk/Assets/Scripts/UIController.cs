@@ -9,16 +9,20 @@ public class UIController : MonoBehaviour
     private PlayerController mPlayerController;
 
     [SerializeField]
-    private GameObject[] mPlayerIconArr;
+    private Button mMoveToBattleBtn;
 
     private void Start()
     {
         mPlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
-    public void ShowIcon(int id)
+    public void MoveToBattle(Vector3 pos)
     {
-        mPlayerIconArr[id].SetActive(true);
-        mPlayerIconArr[id].transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if(mMoveToBattleBtn.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+        mMoveToBattleBtn.gameObject.SetActive(true);
+        mMoveToBattleBtn.gameObject.transform.position = pos + Vector3.down * 100;
     }
 }
