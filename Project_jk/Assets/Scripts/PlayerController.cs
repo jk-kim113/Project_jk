@@ -7,26 +7,34 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     protected float mATK, mDEF, mHEAL;
 
-    protected UIController mUIController;
-
-    [SerializeField]
-    private LayerMask mPlayerLayer;
-
     private void Start()
     {
-        mUIController = GameObject.FindGameObjectWithTag("UIController").GetComponent<UIController>();
+    
     }
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            RaycastHit rayHit;
-
-            if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out rayHit, Mathf.Infinity, mPlayerLayer))
-            {
-                mUIController.MoveToBattle(Input.mousePosition);
-            }
-        }
+        
     }
+
+    private void OnMouseDrag()
+    {
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 15);
+    }
+
+    //private void OnMouseUp()
+    //{
+    //    RaycastHit hit;
+
+    //    if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity))
+    //    {
+    //        Debug.Log(hit.collider.gameObject.name);
+    //        if (hit.collider.gameObject.CompareTag("Player"))
+    //        {
+    //            Debug.Log(hit.collider.gameObject.name);
+    //            transform.position = hit.collider.gameObject.transform.position;
+    //        }
+            
+    //    }
+    //}
 }
