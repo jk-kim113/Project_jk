@@ -8,19 +8,18 @@ public class PlayerController : MonoBehaviour
     protected float mATK, mDEF, mHEAL;
 
     private Transform mBattletablePos;
-    private Transform mStartPos;
+    private Vector3 mStartPos;
 
     private void Start()
     {
-        mStartPos = transform;
+        mStartPos = transform.position;
     }
 
     private void Update()
     {
         RaycastHit hit;
-        Vector3 mPos = Camera.main.WorldToScreenPoint(transform.position);
 
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(mPos), out hit, Mathf.Infinity))
+        if(Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit ,Mathf.Infinity))
         {
             if (hit.collider.gameObject.CompareTag("Monster"))
             {
@@ -30,10 +29,8 @@ public class PlayerController : MonoBehaviour
             {
                 mBattletablePos = null;
             }
-            Debug.Log(mBattletablePos);
         }
     }
-
     private void OnMouseDrag()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 40);
@@ -43,11 +40,11 @@ public class PlayerController : MonoBehaviour
     {
         if(mBattletablePos == null)
         {
-            transform.position = mStartPos.position;
+            transform.position = mStartPos;
         }
         else
         {
-            transform.position = mBattletablePos.position;
+            transform.position = mBattletablePos.position + Vector3.up * 1.5f;
         }
     }
 }
