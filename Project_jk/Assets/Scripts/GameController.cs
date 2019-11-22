@@ -5,11 +5,16 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    public static GameController Instance;
+
     [SerializeField]
     private PlayerController[] mPlayerController;
 
     [SerializeField]
     private Transform[] mWaitingTable;
+
+    [SerializeField]
+    private BattleTable[] mBattleTable;
 
     [SerializeField]
     private StateController[] mStateControl;
@@ -18,6 +23,18 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private Button mTurnExitBtn;
+
+    private void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {   
@@ -47,7 +64,10 @@ public class GameController : MonoBehaviour
 
         for(int i = 0; i < mStateControl.Length; i++)
         {
-            mStateControl[i].NextState();
+            if(mPlayerController[i].GetIsBattlePos())
+            {
+                mStateControl[i].NextState();
+            }
         }
 
         mTurnExitBtn.gameObject.SetActive(true);

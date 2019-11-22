@@ -350,7 +350,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170076733}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 4.87, y: 14.6, z: -8.43}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1048,11 +1048,11 @@ GameObject:
   - component: {fileID: 678937443}
   - component: {fileID: 678937446}
   - component: {fileID: 678937445}
-  - component: {fileID: 678937444}
   - component: {fileID: 678937447}
+  - component: {fileID: 678937444}
   m_Layer: 0
   m_Name: BattleTable2
-  m_TagString: Untagged
+  m_TagString: BattleTable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1080,9 +1080,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 678937442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 194cfed1ff3cee14e8f87b04a5178f35, type: 3}
+  m_Script: {fileID: 11500000, guid: dbe24fb63f3cc9c459aa212bac88f52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mSelectMtr: {fileID: 2100000, guid: bd3a6b898c51007499a5c3466e4aeb77, type: 2}
 --- !u!23 &678937445
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1305,11 +1306,11 @@ GameObject:
   - component: {fileID: 912464198}
   - component: {fileID: 912464201}
   - component: {fileID: 912464200}
-  - component: {fileID: 912464199}
   - component: {fileID: 912464202}
+  - component: {fileID: 912464199}
   m_Layer: 0
   m_Name: BattleTable3
-  m_TagString: Untagged
+  m_TagString: BattleTable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1337,9 +1338,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 912464197}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 194cfed1ff3cee14e8f87b04a5178f35, type: 3}
+  m_Script: {fileID: 11500000, guid: dbe24fb63f3cc9c459aa212bac88f52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mSelectMtr: {fileID: 2100000, guid: bd3a6b898c51007499a5c3466e4aeb77, type: 2}
 --- !u!23 &912464200
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -2356,7 +2358,7 @@ GameObject:
   - component: {fileID: 1497139046}
   m_Layer: 0
   m_Name: BattleTable1
-  m_TagString: Monster
+  m_TagString: BattleTable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2432,6 +2434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbe24fb63f3cc9c459aa212bac88f52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mSelectMtr: {fileID: 2100000, guid: bd3a6b898c51007499a5c3466e4aeb77, type: 2}
 --- !u!136 &1497139046
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2648,6 +2651,7 @@ MonoBehaviour:
   - {fileID: 358291809}
   - {fileID: 2113783955}
   - {fileID: 975903366}
+  mBattleTable: []
   mStateControl:
   - {fileID: 939073506}
   - {fileID: 152235926}

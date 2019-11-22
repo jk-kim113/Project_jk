@@ -10,19 +10,29 @@ public class PlayerController : MonoBehaviour
     private Transform mBattletablePos;
     private Vector3 mStartPos;
 
+    private bool IsBattlePos;
+
     private void Start()
     {
         mStartPos = transform.position;
+        IsBattlePos = false;
+    }
+    
+    public bool GetIsBattlePos()
+    {
+        return IsBattlePos;
     }
 
-    private void Update()
+    private void OnMouseDrag()
     {
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 40);
+
         RaycastHit hit;
 
-        if(Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit ,Mathf.Infinity))
+        if (Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit, Mathf.Infinity))
         {
-            if (hit.collider.gameObject.CompareTag("Monster"))
-            {
+            if (hit.collider.gameObject.CompareTag("BattleTable"))
+            {   
                 mBattletablePos = hit.collider.transform;
             }
             else
@@ -31,20 +41,18 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-    private void OnMouseDrag()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 40);
-    }
 
     private void OnMouseUp()
     {
         if(mBattletablePos == null)
         {
             transform.position = mStartPos;
+            IsBattlePos = false;
         }
         else
         {
             transform.position = mBattletablePos.position + Vector3.up * 1.5f;
+            IsBattlePos = true;
         }
     }
 }

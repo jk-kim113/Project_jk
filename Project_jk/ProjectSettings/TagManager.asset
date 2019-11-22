@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Monster
   - UIController
+  - BattleTable
   layers:
   - Default
   - TransparentFX
