@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     private bool IsBattlePos;
 
+    private BattleTable mBattleTable;
+
     private void Start()
     {
         mStartPos = transform.position;
@@ -34,6 +36,12 @@ public class PlayerController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("BattleTable"))
             {   
                 mBattletablePos = hit.collider.transform;
+                mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
+
+                if(!mBattleTable.GetIsPlayer() && IsBattlePos)
+                {
+                    mBattleTable.StateChange();
+                }
             }
             else
             {
@@ -51,8 +59,17 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            transform.position = mBattletablePos.position + Vector3.up * 1.5f;
-            IsBattlePos = true;
+            if(mBattleTable.GetIsPlayer())
+            {
+                transform.position = mBattletablePos.position + Vector3.up * 1.5f;
+                IsBattlePos = true;
+                mBattleTable.StateChange();
+            }
+            else
+            {
+                transform.position = mStartPos;
+                IsBattlePos = false;
+            }
         }
     }
 }

@@ -6,10 +6,23 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    private PlayerController mPlayerController;
+    [SerializeField]
+    private GameObject[] mPlayerBattleInfo;
+
+    private Text[] mInfoTxt;
+    private List<Text[]> mInfoTxts;
+
+    private void Awake()
+    {
+        mInfoTxt = new Text[4];
+        mInfoTxts = new List<Text[]>();
+    }
 
     private void Start()
     {
-        mPlayerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        for(int i = 0; i < mPlayerBattleInfo.Length; i++)
+        {
+            mPlayerBattleInfo[i].GetComponentsInChildren<Text>();
+        }
     }
 }
