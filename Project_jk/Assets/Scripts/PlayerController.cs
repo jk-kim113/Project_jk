@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnMouseDrag()
     {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 40);
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
 
         RaycastHit hit;
 
