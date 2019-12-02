@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     {
         mStartPos = transform.position;
         IsBattlePos = false;
+        UIController.Instance.ShowPlayerStat(0, "Attack", mATK.ToString(), mDEF.ToString(), mHEAL.ToString());
     }
     
     public bool GetIsBattlePos()

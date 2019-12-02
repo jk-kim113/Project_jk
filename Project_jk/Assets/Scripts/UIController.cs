@@ -6,23 +6,39 @@ using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject[] mPlayerBattleInfo;
+    public static UIController Instance;
 
-    private Text[] mInfoTxt;
-    private List<Text[]> mInfoTxts;
+    [SerializeField]
+    private Image[] mPlayerInfo;
+
+    private Text[] mPlayerInfoText;
+    private List<Text[]> mPlayerInfoTexts;
 
     private void Awake()
     {
-        mInfoTxt = new Text[4];
-        mInfoTxts = new List<Text[]>();
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        mPlayerInfoTexts = new List<Text[]>();
+
+        for (int i = 0; i < mPlayerInfo.Length; i++)
+        {
+            mPlayerInfoText = mPlayerInfo[i].GetComponentsInChildren<Text>();
+            mPlayerInfoTexts.Add(mPlayerInfoText); 
+        }
     }
 
-    private void Start()
+    public void ShowPlayerStat(int id, string state, string atk, string def, string heal)
     {
-        for(int i = 0; i < mPlayerBattleInfo.Length; i++)
-        {
-            mPlayerBattleInfo[i].GetComponentsInChildren<Text>();
-        }
+        mPlayerInfoTexts[id][0].text = state;
+        mPlayerInfoTexts[id][1].text = "ATK : " + atk;
+        mPlayerInfoTexts[id][2].text = "DEF : " + def;
+        mPlayerInfoTexts[id][3].text = "HEAL : " + heal;
     }
 }
