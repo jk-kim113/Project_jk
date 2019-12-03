@@ -9,10 +9,8 @@ public class UIController : MonoBehaviour
     public static UIController Instance;
 
     [SerializeField]
-    private Image[] mPlayerInfo;
-
+    private GameObject mPlayerInfoObj;
     private Text[] mPlayerInfoText;
-    private List<Text[]> mPlayerInfoTexts;
 
     private void Awake()
     {
@@ -25,20 +23,21 @@ public class UIController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        mPlayerInfoTexts = new List<Text[]>();
-
-        for (int i = 0; i < mPlayerInfo.Length; i++)
-        {
-            mPlayerInfoText = mPlayerInfo[i].GetComponentsInChildren<Text>();
-            mPlayerInfoTexts.Add(mPlayerInfoText); 
-        }
+        mPlayerInfoText = mPlayerInfoObj.GetComponentsInChildren<Text>();
     }
 
-    public void ShowPlayerStat(int id, string state, string atk, string def, string heal)
+    public void ShowPlayerInfo(string state, float atk, float def, float heal)
     {
-        mPlayerInfoTexts[id][0].text = state;
-        mPlayerInfoTexts[id][1].text = "ATK : " + atk;
-        mPlayerInfoTexts[id][2].text = "DEF : " + def;
-        mPlayerInfoTexts[id][3].text = "HEAL : " + heal;
+        mPlayerInfoObj.SetActive(true);
+
+        mPlayerInfoText[0].text = state;
+        mPlayerInfoText[1].text = "ATK ; " + atk.ToString();
+        mPlayerInfoText[2].text = "DEF : " + def.ToString();
+        mPlayerInfoText[3].text = "HEAL : " + heal.ToString();
+    }
+
+    public void OffPlayerInfo()
+    {
+        mPlayerInfoObj.SetActive(false);
     }
 }

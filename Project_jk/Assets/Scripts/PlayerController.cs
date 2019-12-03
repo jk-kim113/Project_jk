@@ -2,10 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum eCurrentState
+{
+    Attack,
+    Defend,
+    Heal
+}
+
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
     protected float mATK, mDEF, mHEAL;
+
+    [SerializeField]
+    private eCurrentState eCurrentState;
 
     private Transform mBattletablePos;
     private Vector3 mStartPos;
@@ -18,12 +28,41 @@ public class PlayerController : MonoBehaviour
     {
         mStartPos = transform.position;
         IsBattlePos = false;
-        UIController.Instance.ShowPlayerStat(0, "Attack", mATK.ToString(), mDEF.ToString(), mHEAL.ToString());
     }
     
     public bool GetIsBattlePos()
     {
         return IsBattlePos;
+    }
+
+    public void RaySelected()
+    {
+        UIController.Instance.ShowPlayerInfo("atk", mATK, mDEF, mHEAL);
+    }
+
+    public void NextState()
+    {
+        eCurrentState++;
+        if ((int)eCurrentState > 2)
+        {
+            eCurrentState = 0;
+        }
+
+        switch (eCurrentState)
+        {
+            case eCurrentState.Attack:
+                
+                break;
+            case eCurrentState.Defend:
+                
+                break;
+            case eCurrentState.Heal:
+                
+                break;
+            default:
+                Debug.LogError("Wrong State : " + eCurrentState);
+                break;
+        }
     }
 
     private void OnMouseDrag()

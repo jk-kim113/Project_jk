@@ -11,13 +11,10 @@ public class GameController : MonoBehaviour
     private PlayerController[] mPlayerController;
 
     [SerializeField]
-    private Transform[] mWaitingTable;
+    private GameObject[] mWaitingTable;
 
     [SerializeField]
     private BattleTable[] mBattleTable;
-
-    [SerializeField]
-    private StateController[] mStateControl;
 
     private Monster mMonster;
 
@@ -42,9 +39,9 @@ public class GameController : MonoBehaviour
 
         for(int i = 0; i < mPlayerController.Length; i++)
         {
-            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * 1.5f;
+            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * mWaitingTable[i].GetComponent<Collider>().transform.localScale.y;
         }
-
+        
         if (mTurnExitBtn != null)
             mTurnExitBtn.onClick.AddListener(() => {
 
@@ -62,11 +59,11 @@ public class GameController : MonoBehaviour
         
         yield return new WaitForSeconds(1);
 
-        for(int i = 0; i < mStateControl.Length; i++)
+        for (int i = 0; i < mPlayerController.Length; i++)
         {
-            if(mPlayerController[i].GetIsBattlePos())
+            if (mPlayerController[i].GetIsBattlePos())
             {
-                mStateControl[i].NextState();
+                mPlayerController[i].NextState();
             }
         }
 
