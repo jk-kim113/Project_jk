@@ -10,6 +10,10 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private PlayerController[] mPlayerController;
 
+    private float mTotalAtk;
+    private float mTotalDef;
+    private float mTotalHeal;
+
     [SerializeField]
     private GameObject[] mWaitingTable;
 
@@ -48,6 +52,22 @@ public class GameController : MonoBehaviour
                 StartCoroutine(TurnExchange());
 
             });
+    }
+
+    public void TotalStatus(eCurrentState state, float value)
+    {
+        if(state == eCurrentState.Attack)
+        {
+            mTotalAtk += value;
+        }
+        else if(state == eCurrentState.Defend)
+        {
+            mTotalDef += value;
+        }
+        else if(state == eCurrentState.Heal)
+        {
+            mTotalHeal += value;
+        }
     }
 
     private IEnumerator TurnExchange()

@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     protected float mATK, mDEF, mHEAL;
 
     [SerializeField]
-    private eCurrentState eCurrentState;
+    private eCurrentState mCurrentState;
 
     private Transform mBattletablePos;
     private Vector3 mStartPos;
@@ -42,25 +42,30 @@ public class PlayerController : MonoBehaviour
 
     public void NextState()
     {
-        eCurrentState++;
-        if ((int)eCurrentState > 2)
+        mCurrentState++;
+        if ((int)mCurrentState > 2)
         {
-            eCurrentState = 0;
+            mCurrentState = 0;
         }
 
-        switch (eCurrentState)
+        CurrentState(mCurrentState);
+    }
+
+    public void CurrentState(eCurrentState state)
+    {
+        switch (state)
         {
             case eCurrentState.Attack:
-                
+                GameController.Instance.TotalStatus(state, mATK);
                 break;
             case eCurrentState.Defend:
-                
+                GameController.Instance.TotalStatus(state, mDEF);
                 break;
             case eCurrentState.Heal:
-                
+                GameController.Instance.TotalStatus(state, mHEAL);
                 break;
             default:
-                Debug.LogError("Wrong State : " + eCurrentState);
+                Debug.LogError("Wrong State : " + state);
                 break;
         }
     }
@@ -102,6 +107,7 @@ public class PlayerController : MonoBehaviour
             if(mBattleTable.GetIsPlayer())
             {
                 transform.position = mBattletablePos.position + Vector3.up * 1.5f;
+                CurrentState(mCurrentState);
                 IsBattlePos = true;
                 mBattleTable.StateChange();
             }
