@@ -785,6 +785,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mPlayerInfoObj: {fileID: 1427391141}
+  mTotalStatusObj: {fileID: 1638883337}
 --- !u!4 &862001361
 Transform:
   m_ObjectHideFlags: 0

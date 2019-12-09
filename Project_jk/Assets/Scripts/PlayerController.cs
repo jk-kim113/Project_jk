@@ -2,7 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eCurrentState
+public enum ePlayerState
+{
+    Waiting,
+    Battle
+}
+
+public enum eBattleState
 {
     Attack,
     Defend,
@@ -15,53 +21,50 @@ public class PlayerController : MonoBehaviour
     protected float mATK, mDEF, mHEAL;
 
     [SerializeField]
-    private eCurrentState mCurrentState;
+    private eBattleState mBattleState;
+    private ePlayerState mPlayerState;
 
-    private Transform mBattletablePos;
     private Vector3 mStartPos;
 
-    private bool IsBattlePos;
-
     private BattleTable mBattleTable;
+
+    private void Awake()
+    {
+        mPlayerState = ePlayerState.Waiting;
+    }
 
     private void Start()
     {
         mStartPos = transform.position;
-        IsBattlePos = false;
-    }
-    
-    public bool GetIsBattlePos()
-    {
-        return IsBattlePos;
     }
 
     public void RaySelected()
     {
-        UIController.Instance.ShowPlayerInfo("atk", mATK, mDEF, mHEAL);
+        UIController.Instance.ShowPlayerInfo(mBattleState, mATK, mDEF, mHEAL);
     }
 
     public void NextState()
     {
-        mCurrentState++;
-        if ((int)mCurrentState > 2)
+        mBattleState++;
+        if ((int)mBattleState > 2)
         {
-            mCurrentState = 0;
+            mBattleState = 0;
         }
 
-        CurrentState(mCurrentState);
+        CurrentBattleState(mBattleState);
     }
 
-    public void CurrentState(eCurrentState state)
+    public void CurrentBattleState(eBattleState state)
     {
         switch (state)
         {
-            case eCurrentState.Attack:
+            case eBattleState.Attack:
                 GameController.Instance.TotalStatus(state, mATK);
                 break;
-            case eCurrentState.Defend:
+            case eBattleState.Defend:
                 GameController.Instance.TotalStatus(state, mDEF);
                 break;
-            case eCurrentState.Heal:
+            case eBattleState.Heal:
                 GameController.Instance.TotalStatus(state, mHEAL);
                 break;
             default:
@@ -69,7 +72,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-
+    
     private void OnMouseDrag()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
@@ -79,43 +82,45 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit, Mathf.Infinity))
         {
             if (hit.collider.gameObject.CompareTag("BattleTable"))
-            {   
-                mBattletablePos = hit.collider.transform;
+            {
                 mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
-
-                if(!mBattleTable.GetIsPlayer() && IsBattlePos)
+                if(mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
                 {
                     mBattleTable.StateChange();
                 }
             }
             else
             {
-                mBattletablePos = null;
+                mBattleTable = null;
             }
         }
     }
 
     private void OnMouseUp()
     {
-        if(mBattletablePos == null)
+        if(mBattleTable != null)
         {
-            transform.position = mStartPos;
-            IsBattlePos = false;
-        }
-        else
-        {
-            if(mBattleTable.GetIsPlayer())
+            if (mPlayerState == ePlayerState.Waiting && !mBattleTable.PlayerIsHere())
             {
-                transform.position = mBattletablePos.position + Vector3.up * 1.5f;
-                CurrentState(mCurrentState);
-                IsBattlePos = true;
+                mPlayerState = ePlayerState.Battle;
+                transform.position = mBattleTable.transform.position + Vector3.up * 1.5f;
+                CurrentBattleState(mBattleState);
                 mBattleTable.StateChange();
             }
             else
             {
+                if (mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
+                {
+                    mBattleTable.StateChange();
+                }
+                mPlayerState = ePlayerState.Waiting;
                 transform.position = mStartPos;
-                IsBattlePos = false;
             }
+        }
+        else
+        {
+            mPlayerState = ePlayerState.Waiting;
+            transform.position = mStartPos;
         }
     }
 }

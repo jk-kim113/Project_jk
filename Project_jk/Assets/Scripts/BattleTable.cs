@@ -8,10 +8,11 @@ public class BattleTable : MonoBehaviour
 
     private void Awake()
     {
-        IsPlayer = true;
+        IsPlayer = false;
+        Debug.Log(gameObject.name + IsPlayer);
     }
 
-    public bool GetIsPlayer()
+    public bool PlayerIsHere()
     {
         return IsPlayer;
     }
@@ -19,5 +20,6 @@ public class BattleTable : MonoBehaviour
     public void StateChange()
     {
         IsPlayer = !IsPlayer;
+        Debug.Log(gameObject.name + IsPlayer);
     }
 }

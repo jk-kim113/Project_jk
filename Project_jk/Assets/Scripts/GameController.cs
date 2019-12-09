@@ -35,17 +35,17 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        for (int i = 0; i < mPlayerController.Length; i++)
+        {
+            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * mWaitingTable[i].GetComponent<Collider>().transform.localScale.y;
+        }
     }
 
     void Start()
     {   
         mMonster = GameObject.FindGameObjectWithTag("Monster").GetComponent<Monster>();
 
-        for(int i = 0; i < mPlayerController.Length; i++)
-        {
-            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * mWaitingTable[i].GetComponent<Collider>().transform.localScale.y;
-        }
-        
         if (mTurnExitBtn != null)
             mTurnExitBtn.onClick.AddListener(() => {
 
@@ -54,20 +54,22 @@ public class GameController : MonoBehaviour
             });
     }
 
-    public void TotalStatus(eCurrentState state, float value)
+    public void TotalStatus(eBattleState state, float value)
     {
-        if(state == eCurrentState.Attack)
+        if(state == eBattleState.Attack)
         {
             mTotalAtk += value;
         }
-        else if(state == eCurrentState.Defend)
+        else if(state == eBattleState.Defend)
         {
             mTotalDef += value;
         }
-        else if(state == eCurrentState.Heal)
+        else if(state == eBattleState.Heal)
         {
             mTotalHeal += value;
         }
+
+        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
     }
 
     private IEnumerator TurnExchange()
@@ -81,10 +83,10 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < mPlayerController.Length; i++)
         {
-            if (mPlayerController[i].GetIsBattlePos())
-            {
-                mPlayerController[i].NextState();
-            }
+            //if (mPlayerController[i].GetIsBattlePos())
+            //{
+            //    mPlayerController[i].NextState();
+            //}
         }
 
         mTurnExitBtn.gameObject.SetActive(true);

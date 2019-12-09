@@ -128,7 +128,7 @@ MonoBehaviour:
   mATK: 3
   mDEF: 1
   mHEAL: 6
-  eCurrentState: 2
+  mCurrentState: 2
 --- !u!136 &4594208006802993297
 CapsuleCollider:
   m_ObjectHideFlags: 0
