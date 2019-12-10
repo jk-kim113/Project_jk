@@ -56,17 +56,39 @@ public class GameController : MonoBehaviour
 
     public void TotalStatus(eBattleState state, float value)
     {
-        if(state == eBattleState.Attack)
+        switch(state)
         {
-            mTotalAtk += value;
+            case eBattleState.Attack:
+                mTotalAtk += value;
+                break;
+            case eBattleState.Defend:
+                mTotalDef += value;
+                break;
+            case eBattleState.Heal:
+                mTotalHeal += value;
+                break;
+            default:
+                break;
         }
-        else if(state == eBattleState.Defend)
+
+        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
+    }
+
+    public void SubtractStatus(eBattleState state, float value)
+    {
+        switch (state)
         {
-            mTotalDef += value;
-        }
-        else if(state == eBattleState.Heal)
-        {
-            mTotalHeal += value;
+            case eBattleState.Attack:
+                mTotalAtk -= value;
+                break;
+            case eBattleState.Defend:
+                mTotalDef -= value;
+                break;
+            case eBattleState.Heal:
+                mTotalHeal -= value;
+                break;
+            default:
+                break;
         }
 
         UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);

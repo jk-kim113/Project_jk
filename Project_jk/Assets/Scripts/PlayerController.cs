@@ -138,12 +138,44 @@ public class PlayerController : MonoBehaviour
                 }
                 mPlayerState = ePlayerState.Waiting;
                 transform.position = mStartPos;
+
+                switch (mBattleState)
+                {
+                    case eBattleState.Attack:
+                        GameController.Instance.SubtractStatus(mBattleState, mATK);
+                        break;
+                    case eBattleState.Defend:
+                        GameController.Instance.SubtractStatus(mBattleState, mDEF);
+                        break;
+                    case eBattleState.Heal:
+                        GameController.Instance.SubtractStatus(mBattleState, mHEAL);
+                        break;
+                    default:
+                        Debug.LogError("Wrong State : " + mBattleState);
+                        break;
+                }
             }
         }
         else
         {
             mPlayerState = ePlayerState.Waiting;
             transform.position = mStartPos;
+
+            switch (mBattleState)
+            {
+                case eBattleState.Attack:
+                    GameController.Instance.SubtractStatus(mBattleState, mATK);
+                    break;
+                case eBattleState.Defend:
+                    GameController.Instance.SubtractStatus(mBattleState, mDEF);
+                    break;
+                case eBattleState.Heal:
+                    GameController.Instance.SubtractStatus(mBattleState, mHEAL);
+                    break;
+                default:
+                    Debug.LogError("Wrong State : " + mBattleState);
+                    break;
+            }
         }
     }
 }
