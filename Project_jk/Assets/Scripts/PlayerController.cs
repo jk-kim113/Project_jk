@@ -72,7 +72,30 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
-    
+
+    private void OnMouseDown()
+    {
+        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit, Mathf.Infinity))
+        {
+            if (hit.collider.gameObject.CompareTag("BattleTable"))
+            {
+                mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
+                if (mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
+                {
+                    mBattleTable.StateChange();
+                }
+            }
+            else
+            {
+                mBattleTable = null;
+            }
+        }
+    }
+
     private void OnMouseDrag()
     {
         transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
@@ -103,7 +126,7 @@ public class PlayerController : MonoBehaviour
             if (mPlayerState == ePlayerState.Waiting && !mBattleTable.PlayerIsHere())
             {
                 mPlayerState = ePlayerState.Battle;
-                transform.position = mBattleTable.transform.position + Vector3.up * 1.5f;
+                transform.position = mBattleTable.transform.position + Vector3.up * 0.5f;
                 CurrentBattleState(mBattleState);
                 mBattleTable.StateChange();
             }

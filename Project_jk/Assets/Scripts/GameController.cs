@@ -38,7 +38,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < mPlayerController.Length; i++)
         {
-            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * mWaitingTable[i].GetComponent<Collider>().transform.localScale.y;
+            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * 0.5f;
         }
     }
 
