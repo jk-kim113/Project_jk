@@ -7,15 +7,9 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    [SerializeField]
-    private PlayerController[] mPlayerController;
-
     private float mTotalAtk;
     private float mTotalDef;
     private float mTotalHeal;
-
-    [SerializeField]
-    private GameObject[] mWaitingTable;
 
     [SerializeField]
     private BattleTable[] mBattleTable;
@@ -35,17 +29,10 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        for (int i = 0; i < mPlayerController.Length; i++)
-        {
-            mPlayerController[i].transform.position = mWaitingTable[i].transform.position + Vector3.up * 0.5f;
-        }
     }
 
     void Start()
     {   
-        mMonster = GameObject.FindGameObjectWithTag("Monster").GetComponent<Monster>();
-
         if (mTurnExitBtn != null)
             mTurnExitBtn.onClick.AddListener(() => {
 
@@ -54,17 +41,17 @@ public class GameController : MonoBehaviour
             });
     }
 
-    public void TotalStatus(eBattleState state, float value)
+    public void TotalStatus(eBattleType state, float value)
     {
         switch(state)
         {
-            case eBattleState.Attack:
+            case eBattleType.Attack:
                 mTotalAtk += value;
                 break;
-            case eBattleState.Defend:
+            case eBattleType.Defend:
                 mTotalDef += value;
                 break;
-            case eBattleState.Heal:
+            case eBattleType.Heal:
                 mTotalHeal += value;
                 break;
             default:
@@ -74,17 +61,17 @@ public class GameController : MonoBehaviour
         UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
     }
 
-    public void SubtractStatus(eBattleState state, float value)
+    public void SubtractStatus(eBattleType state, float value)
     {
         switch (state)
         {
-            case eBattleState.Attack:
+            case eBattleType.Attack:
                 mTotalAtk -= value;
                 break;
-            case eBattleState.Defend:
+            case eBattleType.Defend:
                 mTotalDef -= value;
                 break;
-            case eBattleState.Heal:
+            case eBattleType.Heal:
                 mTotalHeal -= value;
                 break;
             default:
@@ -100,16 +87,9 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        
         yield return new WaitForSeconds(1);
 
-        for (int i = 0; i < mPlayerController.Length; i++)
-        {
-            //if (mPlayerController[i].GetIsBattlePos())
-            //{
-            //    mPlayerController[i].NextState();
-            //}
-        }
+        PlayerController.Instance.NextBattleType();
 
         mTurnExitBtn.gameObject.SetActive(true);
     }

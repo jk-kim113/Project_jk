@@ -31,7 +31,7 @@ public class UIController : MonoBehaviour
         mTotalStatusText = mTotalStatusObj.GetComponentsInChildren<Text>();
     }
 
-    public void ShowPlayerInfo(eBattleState state, float atk, float def, float heal)
+    public void ShowPlayerInfo(eBattleType state, float atk, float def, float heal)
     {
         mPlayerInfoObj.SetActive(true);
 

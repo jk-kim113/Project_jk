@@ -2,180 +2,135 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ePlayerState
-{
-    Waiting,
-    Battle
-}
-
-public enum eBattleState
-{
-    Attack,
-    Defend,
-    Heal
-}
-
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    protected float mATK, mDEF, mHEAL;
+    public static PlayerController Instance;
 
     [SerializeField]
-    private eBattleState mBattleState;
-    private ePlayerState mPlayerState;
+    private Player[] mPlayerPrefabArr;
+    [SerializeField]
+    private Transform[] mPlayerSpawnPosArr;
+    private List<Player> mPlayerSpawnedList;
 
-    private Vector3 mStartPos;
-
-    private BattleTable mBattleTable;
+    private PlayerData[] mPlayerDataArr;
 
     private void Awake()
     {
-        mPlayerState = ePlayerState.Waiting;
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        #region Playerdata
+        mPlayerDataArr = new PlayerData[6];
+
+        mPlayerDataArr[0] = new PlayerData();
+        mPlayerDataArr[0].Name = "Berserker";
+        mPlayerDataArr[0].ID = 0;
+        mPlayerDataArr[0].Attack = 6;
+        mPlayerDataArr[0].Defend = 3;
+        mPlayerDataArr[0].Heal = 1;
+        mPlayerDataArr[0].HPmax = 10;
+        mPlayerDataArr[0].HPcurrent = 10;
+        mPlayerDataArr[0].BattleType = eBattleType.Attack;
+
+        mPlayerDataArr[1] = new PlayerData();
+        mPlayerDataArr[1].Name = "Paladin";
+        mPlayerDataArr[1].ID = 1;
+        mPlayerDataArr[1].Attack = 6;
+        mPlayerDataArr[1].Defend = 1;
+        mPlayerDataArr[1].Heal = 3;
+        mPlayerDataArr[1].HPmax = 10;
+        mPlayerDataArr[1].HPcurrent = 10;
+        mPlayerDataArr[1].BattleType = eBattleType.Attack;
+
+        mPlayerDataArr[2] = new PlayerData();
+        mPlayerDataArr[2].Name = "Warrior";
+        mPlayerDataArr[2].ID = 2;
+        mPlayerDataArr[2].Attack = 3;
+        mPlayerDataArr[2].Defend = 6;
+        mPlayerDataArr[2].Heal = 1;
+        mPlayerDataArr[2].HPmax = 10;
+        mPlayerDataArr[2].HPcurrent = 10;
+        mPlayerDataArr[2].BattleType = eBattleType.Defend;
+
+        mPlayerDataArr[3] = new PlayerData();
+        mPlayerDataArr[3].Name = "Guardian";
+        mPlayerDataArr[3].ID = 3;
+        mPlayerDataArr[3].Attack = 1;
+        mPlayerDataArr[3].Defend = 6;
+        mPlayerDataArr[3].Heal = 3;
+        mPlayerDataArr[3].HPmax = 10;
+        mPlayerDataArr[3].HPcurrent = 10;
+        mPlayerDataArr[3].BattleType = eBattleType.Defend;
+
+        mPlayerDataArr[4] = new PlayerData();
+        mPlayerDataArr[4].Name = "Magician";
+        mPlayerDataArr[4].ID = 4;
+        mPlayerDataArr[4].Attack = 3;
+        mPlayerDataArr[4].Defend = 1;
+        mPlayerDataArr[4].Heal = 6;
+        mPlayerDataArr[4].HPmax = 10;
+        mPlayerDataArr[4].HPcurrent = 10;
+        mPlayerDataArr[4].BattleType = eBattleType.Heal;
+
+        mPlayerDataArr[5] = new PlayerData();
+        mPlayerDataArr[5].Name = "Healer";
+        mPlayerDataArr[5].ID = 5;
+        mPlayerDataArr[5].Attack = 1;
+        mPlayerDataArr[5].Defend = 3;
+        mPlayerDataArr[5].Heal = 6;
+        mPlayerDataArr[5].HPmax = 10;
+        mPlayerDataArr[5].HPcurrent = 10;
+        mPlayerDataArr[5].BattleType = eBattleType.Heal;
+        #endregion
+
+        mPlayerSpawnedList = new List<Player>();
     }
 
     private void Start()
     {
-        mStartPos = transform.position;
-    }
-
-    public void RaySelected()
-    {
-        UIController.Instance.ShowPlayerInfo(mBattleState, mATK, mDEF, mHEAL);
-    }
-
-    public void NextState()
-    {
-        mBattleState++;
-        if ((int)mBattleState > 2)
+        for (int i = 0; i < mPlayerPrefabArr.Length; i++)
         {
-            mBattleState = 0;
-        }
-
-        CurrentBattleState(mBattleState);
-    }
-
-    public void CurrentBattleState(eBattleState state)
-    {
-        switch (state)
-        {
-            case eBattleState.Attack:
-                GameController.Instance.TotalStatus(state, mATK);
-                break;
-            case eBattleState.Defend:
-                GameController.Instance.TotalStatus(state, mDEF);
-                break;
-            case eBattleState.Heal:
-                GameController.Instance.TotalStatus(state, mHEAL);
-                break;
-            default:
-                Debug.LogError("Wrong State : " + state);
-                break;
+            Player player = Instantiate(mPlayerPrefabArr[i]);
+            player.transform.position = mPlayerSpawnPosArr[i].position;
+            player.Initialize(
+                mPlayerDataArr[i].Name,
+                mPlayerDataArr[i].ID,
+                mPlayerDataArr[i].Attack,
+                mPlayerDataArr[i].Defend,
+                mPlayerDataArr[i].Heal,
+                mPlayerDataArr[i].HPmax,
+                mPlayerDataArr[i].HPcurrent,
+                mPlayerDataArr[i].BattleType);
+            mPlayerSpawnedList.Add(player);
         }
     }
 
-    private void OnMouseDown()
+    public void NextBattleType()
     {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit, Mathf.Infinity))
+        for (int i = 0; i < mPlayerSpawnedList.Count; i++)
         {
-            if (hit.collider.gameObject.CompareTag("BattleTable"))
+            if (mPlayerSpawnedList[i].GetPlayerState() == ePlayerState.Battle)
             {
-                mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
-                if (mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
-                {
-                    mBattleTable.StateChange();
-                }
-            }
-            else
-            {
-                mBattleTable = null;
+                mPlayerSpawnedList[i].NextState();
             }
         }
     }
+}
 
-    private void OnMouseDrag()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit, Mathf.Infinity))
-        {
-            if (hit.collider.gameObject.CompareTag("BattleTable"))
-            {
-                mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
-                if(mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
-                {
-                    mBattleTable.StateChange();
-                }
-            }
-            else
-            {
-                mBattleTable = null;
-            }
-        }
-    }
-
-    private void OnMouseUp()
-    {
-        if(mBattleTable != null)
-        {
-            if (mPlayerState == ePlayerState.Waiting && !mBattleTable.PlayerIsHere())
-            {
-                mPlayerState = ePlayerState.Battle;
-                transform.position = mBattleTable.transform.position + Vector3.up * 0.5f;
-                CurrentBattleState(mBattleState);
-                mBattleTable.StateChange();
-            }
-            else
-            {
-                if (mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
-                {
-                    mBattleTable.StateChange();
-                }
-                mPlayerState = ePlayerState.Waiting;
-                transform.position = mStartPos;
-
-                switch (mBattleState)
-                {
-                    case eBattleState.Attack:
-                        GameController.Instance.SubtractStatus(mBattleState, mATK);
-                        break;
-                    case eBattleState.Defend:
-                        GameController.Instance.SubtractStatus(mBattleState, mDEF);
-                        break;
-                    case eBattleState.Heal:
-                        GameController.Instance.SubtractStatus(mBattleState, mHEAL);
-                        break;
-                    default:
-                        Debug.LogError("Wrong State : " + mBattleState);
-                        break;
-                }
-            }
-        }
-        else
-        {
-            mPlayerState = ePlayerState.Waiting;
-            transform.position = mStartPos;
-
-            switch (mBattleState)
-            {
-                case eBattleState.Attack:
-                    GameController.Instance.SubtractStatus(mBattleState, mATK);
-                    break;
-                case eBattleState.Defend:
-                    GameController.Instance.SubtractStatus(mBattleState, mDEF);
-                    break;
-                case eBattleState.Heal:
-                    GameController.Instance.SubtractStatus(mBattleState, mHEAL);
-                    break;
-                default:
-                    Debug.LogError("Wrong State : " + mBattleState);
-                    break;
-            }
-        }
-    }
+public class PlayerData
+{
+    public string Name;
+    public int ID;
+    public float Attack;
+    public float Defend;
+    public float Heal;
+    public float HPmax;
+    public float HPcurrent;
+    public eBattleType BattleType;
 }

@@ -3,14 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RayController : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+{   
     void Update()
     {
         RaycastHit hit;
@@ -20,7 +13,7 @@ public class RayController : MonoBehaviour
         {
             if(hit.collider.gameObject.CompareTag("Player"))
             {
-                hit.collider.gameObject.GetComponent<PlayerController>().RaySelected();
+                hit.collider.gameObject.GetComponent<Player>().RaySelected();
             }
             else
             {

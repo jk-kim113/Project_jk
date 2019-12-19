@@ -9,7 +9,6 @@ public class BattleTable : MonoBehaviour
     private void Awake()
     {
         IsPlayer = false;
-        Debug.Log(gameObject.name + IsPlayer);
     }
 
     public bool PlayerIsHere()
@@ -20,6 +19,5 @@ public class BattleTable : MonoBehaviour
     public void StateChange()
     {
         IsPlayer = !IsPlayer;
-        Debug.Log(gameObject.name + IsPlayer);
     }
 }

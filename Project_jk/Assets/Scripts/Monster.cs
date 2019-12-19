@@ -20,16 +20,11 @@ public class Monster : MonoBehaviour
     public void GetDamage(float damage)
     {
         mHP -= damage;
+        Debug.Log(mHP);
     }
 
     public float MonsterAttack()
     {
         return mATK;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
