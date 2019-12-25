@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
+    public static MonsterController Instance;
+
+    [SerializeField]
+    private Monster[] mMonsterPrefabArr;
     private MonsterData[] mMonsterDataArr;
+
+    private int mMonsterIndex;
+    private Monster mMonsterSpawned;
 
     private void Awake()
     {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
         #region MonsterData
         mMonsterDataArr = new MonsterData[4];
 
@@ -44,14 +60,43 @@ public class MonsterController : MonoBehaviour
         mMonsterDataArr[3].HPcurrent = 90;
         #endregion
     }
+
+    private void Start()
+    {
+        
+    }
+
+    public void MonsterSpawn()
+    {
+        mMonsterIndex = Random.Range(0, mMonsterDataArr.Length);
+
+        mMonsterSpawned = Instantiate(mMonsterPrefabArr[mMonsterIndex]);
+        mMonsterSpawned.Initialize(
+            mMonsterDataArr[mMonsterIndex].Name,
+            mMonsterDataArr[mMonsterIndex].ID,
+            mMonsterDataArr[mMonsterIndex].Attack,
+            mMonsterDataArr[mMonsterIndex].Defend,
+            mMonsterDataArr[mMonsterIndex].HPmax,
+            mMonsterDataArr[mMonsterIndex].HPcurrent);
+    }
+
+    public void GetDamage(double damage)
+    {
+        mMonsterSpawned.GetDamage(damage);
+    }
+
+    public double SpawnedMonsterAttack()
+    {
+        return mMonsterSpawned.ATK;
+    }
 }
 
 public class MonsterData
 {
     public string Name;
     public int ID;
-    public float Attack;
-    public float Defend;
-    public float HPmax;
-    public float HPcurrent;
+    public double Attack;
+    public double Defend;
+    public double HPmax;
+    public double HPcurrent;
 }

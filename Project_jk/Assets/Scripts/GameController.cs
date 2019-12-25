@@ -7,14 +7,8 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
-    private float mTotalAtk;
-    private float mTotalDef;
-    private float mTotalHeal;
-
     [SerializeField]
     private BattleTable[] mBattleTable;
-
-    private Monster mMonster;
 
     [SerializeField]
     private Button mTurnExitBtn;
@@ -32,7 +26,9 @@ public class GameController : MonoBehaviour
     }
 
     void Start()
-    {   
+    {
+        MonsterController.Instance.MonsterSpawn();
+
         if (mTurnExitBtn != null)
             mTurnExitBtn.onClick.AddListener(() => {
 
@@ -41,53 +37,19 @@ public class GameController : MonoBehaviour
             });
     }
 
-    public void TotalStatus(eBattleType state, float value)
-    {
-        switch(state)
-        {
-            case eBattleType.Attack:
-                mTotalAtk += value;
-                break;
-            case eBattleType.Defend:
-                mTotalDef += value;
-                break;
-            case eBattleType.Heal:
-                mTotalHeal += value;
-                break;
-            default:
-                break;
-        }
-
-        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
-    }
-
-    public void SubtractStatus(eBattleType state, float value)
-    {
-        switch (state)
-        {
-            case eBattleType.Attack:
-                mTotalAtk -= value;
-                break;
-            case eBattleType.Defend:
-                mTotalDef -= value;
-                break;
-            case eBattleType.Heal:
-                mTotalHeal -= value;
-                break;
-            default:
-                break;
-        }
-
-        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
-    }
-
     private IEnumerator TurnExchange()
     {
+        WaitForSeconds onetime = new WaitForSeconds(1);
+
         mTurnExitBtn.gameObject.SetActive(false);
 
-        yield return new WaitForSeconds(1);
+        yield return onetime;
 
-        yield return new WaitForSeconds(1);
+        MonsterController.Instance.GetDamage(PlayerController.Instance.TotalAtk);
+
+        yield return onetime;
+
+        PlayerController.Instance.GetDamage(MonsterController.Instance.SpawnedMonsterAttack());
 
         PlayerController.Instance.NextBattleType();
 

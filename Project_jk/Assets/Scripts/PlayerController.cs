@@ -14,6 +14,20 @@ public class PlayerController : MonoBehaviour
 
     private PlayerData[] mPlayerDataArr;
 
+    private double mTotalAtk;
+    public double TotalAtk
+    {
+        get
+        {
+            return mTotalAtk;
+        }
+    }
+    private double mTotalDef;
+    private double mTotalHeal;
+
+    private double mHPmax;
+    private double mHPcurrent;
+
     private void Awake()
     {
         if(Instance == null)
@@ -90,6 +104,9 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         mPlayerSpawnedList = new List<Player>();
+
+        mHPmax = 100;
+        mHPcurrent = mHPmax;
     }
 
     private void Start()
@@ -109,6 +126,18 @@ public class PlayerController : MonoBehaviour
                 mPlayerDataArr[i].BattleType);
             mPlayerSpawnedList.Add(player);
         }
+
+        UIController.Instance.ShowPlayerGaugeBar(mHPcurrent, mHPmax);
+    }
+
+    public void GetDamage(double value)
+    {
+        if(value > mTotalDef)
+        {
+            mHPcurrent -= value - mTotalDef;
+        }
+
+        UIController.Instance.ShowPlayerGaugeBar(mHPcurrent, mHPmax);
     }
 
     public void NextBattleType()
@@ -121,16 +150,56 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+    public void TotalStatus(eBattleType state, double value)
+    {
+        switch (state)
+        {
+            case eBattleType.Attack:
+                mTotalAtk += value;
+                break;
+            case eBattleType.Defend:
+                mTotalDef += value;
+                break;
+            case eBattleType.Heal:
+                mTotalHeal += value;
+                break;
+            default:
+                break;
+        }
+
+        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
+    }
+
+    public void SubtractStatus(eBattleType state, double value)
+    {
+        switch (state)
+        {
+            case eBattleType.Attack:
+                mTotalAtk -= value;
+                break;
+            case eBattleType.Defend:
+                mTotalDef -= value;
+                break;
+            case eBattleType.Heal:
+                mTotalHeal -= value;
+                break;
+            default:
+                break;
+        }
+
+        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
+    }
 }
 
 public class PlayerData
 {
     public string Name;
     public int ID;
-    public float Attack;
-    public float Defend;
-    public float Heal;
-    public float HPmax;
-    public float HPcurrent;
+    public double Attack;
+    public double Defend;
+    public double Heal;
+    public double HPmax;
+    public double HPcurrent;
     public eBattleType BattleType;
 }

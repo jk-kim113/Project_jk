@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 {
     private string mName;
     private int mID;
-    private float mATK, mDEF, mHEAL, mHPmax, mHPcurrent;
+    private double mATK, mDEF, mHEAL, mHPmax, mHPcurrent;
     private eBattleType mBattleType;
 
     private ePlayerState mPlayerState;
@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     private Vector3 mStartPos;
 
     private BattleTable mBattleTable;
+
+    private bool IsMouseDrag;
 
     private void Awake()
     {
@@ -38,7 +40,7 @@ public class Player : MonoBehaviour
         mStartPos = transform.position;
     }
 
-    public void Initialize(string name, int id, float atk, float def, float heal, float hpmax, float hpcurrent, eBattleType battletype)
+    public void Initialize(string name, int id, double atk, double def, double heal, double hpmax, double hpcurrent, eBattleType battletype)
     {
         mName = name;
         mID = id;
@@ -50,7 +52,7 @@ public class Player : MonoBehaviour
         mBattleType = battletype;
     }
 
-    public void Renew(float atk, float def, float heal, float hpmax, float hpcurrent)
+    public void Renew(double atk, double def, double heal, double hpmax, double hpcurrent)
     {
         mATK = atk;
         mDEF = def;
@@ -87,13 +89,13 @@ public class Player : MonoBehaviour
         switch (state)
         {
             case eBattleType.Attack:
-                GameController.Instance.TotalStatus(state, mATK);
+                PlayerController.Instance.TotalStatus(state, mATK);
                 break;
             case eBattleType.Defend:
-                GameController.Instance.TotalStatus(state, mDEF);
+                PlayerController.Instance.TotalStatus(state, mDEF);
                 break;
             case eBattleType.Heal:
-                GameController.Instance.TotalStatus(state, mHEAL);
+                PlayerController.Instance.TotalStatus(state, mHEAL);
                 break;
             default:
                 Debug.LogError("Wrong State : " + state);
@@ -106,13 +108,13 @@ public class Player : MonoBehaviour
         switch (mBattleType)
         {
             case eBattleType.Attack:
-                GameController.Instance.SubtractStatus(mBattleType, mATK);
+                PlayerController.Instance.SubtractStatus(mBattleType, mATK);
                 break;
             case eBattleType.Defend:
-                GameController.Instance.SubtractStatus(mBattleType, mDEF);
+                PlayerController.Instance.SubtractStatus(mBattleType, mDEF);
                 break;
             case eBattleType.Heal:
-                GameController.Instance.SubtractStatus(mBattleType, mHEAL);
+                PlayerController.Instance.SubtractStatus(mBattleType, mHEAL);
                 break;
             default:
                 Debug.LogError("Wrong State : " + mBattleType);
@@ -120,68 +122,74 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void DetectBattleTable()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition + Vector3.forward * 70);
-
-        RaycastHit hit;
-
-        if (Physics.Raycast(transform.position, transform.position - Camera.main.ScreenToWorldPoint(Input.mousePosition), out hit, Mathf.Infinity))
-        {
-            if (hit.collider.gameObject.CompareTag("BattleTable"))
-            {
-                mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
-                if (mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
-                {
-                    mBattleTable.StateChange();
-                }
-            }
-            else
-            {
-                mBattleTable = null;
-            }
-        }
-    }
-
     private void OnMouseDown()
     {
-        DetectBattleTable();
+        mBattleTable = RayController.Instance.DetectBattleTable(this);
     }
 
     private void OnMouseDrag()
-    {
-        DetectBattleTable();
+    {   
+        mBattleTable = RayController.Instance.DetectBattleTable(this);
     }
 
     private void OnMouseUp()
     {
         if (mBattleTable != null)
         {
-            if (mPlayerState == ePlayerState.Waiting && !mBattleTable.PlayerIsHere())
+            if(!mBattleTable.PlayerIsHere())
             {
-                mPlayerState = ePlayerState.Battle;
-                transform.position = mBattleTable.transform.position + Vector3.up * 0.5f;
-                CurrentBattleState(mBattleType);
-                mBattleTable.StateChange();
+                switch(mPlayerState)
+                {
+                    case ePlayerState.Waiting:
+
+                        transform.position = mBattleTable.transform.position + Vector3.up * 0.5f;
+                        mPlayerState = ePlayerState.Battle;
+                        CurrentBattleState(mBattleType);
+                        mBattleTable.StateChange();
+
+                        break;
+                    case ePlayerState.Battle:
+
+                        transform.position = mStartPos;
+                        SubtractPlayerState();
+                        mPlayerState = ePlayerState.Waiting;
+
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
-                if (mBattleTable.PlayerIsHere() && mPlayerState == ePlayerState.Battle)
+                switch (mPlayerState)
                 {
-                    mBattleTable.StateChange();
-                }
-                mPlayerState = ePlayerState.Waiting;
-                transform.position = mStartPos;
+                    case ePlayerState.Waiting:
 
-                SubtractPlayerState();
+                        transform.position = mStartPos;
+                        mPlayerState = ePlayerState.Waiting;
+
+                        break;
+                    case ePlayerState.Battle:
+
+                        transform.position = mStartPos;
+                        SubtractPlayerState();
+                        mPlayerState = ePlayerState.Waiting;
+
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         else
         {
+            if(mPlayerState == ePlayerState.Battle)
+            {
+                SubtractPlayerState();
+            }
+
             mPlayerState = ePlayerState.Waiting;
             transform.position = mStartPos;
-
-            SubtractPlayerState();
         }
     }
 }
