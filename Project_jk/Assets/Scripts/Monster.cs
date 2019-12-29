@@ -6,7 +6,7 @@ public class Monster : MonoBehaviour
 {
     private string mName;
     private int mID;
-    private double mATK, mDEF, mHPmax, mHPcurrent;
+    private double mATK, mDEF, mHPmax, mHPcurrent, mATKWeight, mDEFWeight, mHPWeight;
     public double ATK
     {
         get
@@ -28,11 +28,14 @@ public class Monster : MonoBehaviour
         UIController.Instance.ShowMonsterGaugeBar(mHPcurrent, mHPmax);
     }
 
-    public void Initialize(string name, int id, double atk, double def, double hpmax, double hpcurrent)
+    public void Initialize(string name, int id, double atk, double def, double hpmax, double hpcurrent, double atkweight, double defweight, double hpweight)
     {
         mName = name;
         mID = id;
-        mATK = atk;
+        mATKWeight = atkweight;
+        mDEFWeight = defweight;
+        mHPWeight = hpweight;
+
         Renew(atk, def, hpmax, hpcurrent);
     }
 
@@ -41,7 +44,7 @@ public class Monster : MonoBehaviour
         mATK = atk;
         mDEF = def;
         mHPmax = hpmax;
-        mHPcurrent = hpcurrent;
+        mHPcurrent = mHPmax;
     }
 
     public void GetDamage(double damage)
@@ -59,6 +62,7 @@ public class Monster : MonoBehaviour
         if(mHPcurrent <= 0)
         {
             mAnimator.SetBool(DieAnim, true);
+            MonsterController.Instance.DeadSpawnedMonster();
         }
 
         UIController.Instance.ShowMonsterGaugeBar(mHPcurrent, mHPmax);
