@@ -113,6 +113,8 @@ public class MonsterController : MonoBehaviour
         }
 
         mStageLevel++;
+
+        GameController.Instance.ClearStage();
     }
 }
 

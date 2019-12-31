@@ -55,4 +55,10 @@ public class GameController : MonoBehaviour
 
         mTurnExitBtn.gameObject.SetActive(true);
     }
+
+    public void ClearStage()
+    {
+        PlayerController.Instance.AddEXP();
+        //UI Update
+    }
 }

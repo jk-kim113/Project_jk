@@ -16,9 +16,8 @@ public enum eBattleType
 }
 
 public class Player : MonoBehaviour
-{
-    private string mName;
-    private int mID;
+{   
+    private int mID, mLevel;
     private double mATK, mDEF, mHEAL, mHPmax, mHPcurrent;
     private eBattleType mBattleType;
 
@@ -28,7 +27,18 @@ public class Player : MonoBehaviour
 
     private BattleTable mBattleTable;
 
-    private bool IsMouseDrag;
+    private int mBattleCount;
+    public int BattleCount
+    {
+        get
+        {
+            return mBattleCount;
+        }
+        set
+        {
+            mBattleCount = value;
+        }
+    }
 
     private void Awake()
     {
@@ -40,15 +50,11 @@ public class Player : MonoBehaviour
         mStartPos = transform.position;
     }
 
-    public void Initialize(string name, int id, double atk, double def, double heal, double hpmax, double hpcurrent, eBattleType battletype)
-    {
-        mName = name;
+    public void Initialize(int id, int level, double atk, double def, double heal, double hpmax, double hpcurrent, eBattleType battletype)
+    {   
         mID = id;
-        mATK = atk;
-        mDEF = def;
-        mHEAL = heal;
-        mHPmax = hpmax;
-        mHPcurrent = hpcurrent;
+        mLevel = level;
+        Renew(atk, def, heal, hpmax, hpcurrent);
         mBattleType = battletype;
     }
 
@@ -73,6 +79,7 @@ public class Player : MonoBehaviour
 
     public void NextState()
     {
+        mBattleCount++;
         SubtractPlayerState();
 
         mBattleType++;
