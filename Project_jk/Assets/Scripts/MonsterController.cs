@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MonsterController : MonoBehaviour
+public class MonsterController : DataLoader
 {
     public static MonsterController Instance;
 
@@ -16,6 +16,8 @@ public class MonsterController : MonoBehaviour
 
     private int mStageLevel;
 
+    private string[] mDataDummy;
+
     private void Awake()
     {
         if(Instance == null)
@@ -27,53 +29,22 @@ public class MonsterController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        #region MonsterData
-        mMonsterDataArr = new MonsterData[4];
-
-        mMonsterDataArr[0] = new MonsterData();
-        mMonsterDataArr[0].Name = "Troll";
-        mMonsterDataArr[0].ID = 0;
-        mMonsterDataArr[0].Attack = 8;
-        mMonsterDataArr[0].Defend = 2;
-        mMonsterDataArr[0].HPmax = 50;
-        mMonsterDataArr[0].HPcurrent = 50;
-        mMonsterDataArr[0].AttackWeight = 1.212;
-        mMonsterDataArr[0].DefendWeight = 1.2;
-        mMonsterDataArr[0].HPWeight = 1.2;
-
-        mMonsterDataArr[1] = new MonsterData();
-        mMonsterDataArr[1].Name = "HobGoblin";
-        mMonsterDataArr[1].ID = 1;
-        mMonsterDataArr[1].Attack = 3;
-        mMonsterDataArr[1].Defend = 7;
-        mMonsterDataArr[1].HPmax = 70;
-        mMonsterDataArr[1].HPcurrent = 70;
-        mMonsterDataArr[1].AttackWeight = 1.21;
-        mMonsterDataArr[1].DefendWeight = 1.205;
-        mMonsterDataArr[1].HPWeight = 1.205;
-
-        mMonsterDataArr[2] = new MonsterData();
-        mMonsterDataArr[2].Name = "Goblin";
-        mMonsterDataArr[2].ID = 2;
-        mMonsterDataArr[2].Attack = 5;
-        mMonsterDataArr[2].Defend = 5;
-        mMonsterDataArr[2].HPmax = 40;
-        mMonsterDataArr[2].HPcurrent = 40;
-        mMonsterDataArr[2].AttackWeight = 1.3;
-        mMonsterDataArr[2].DefendWeight = 1.3;
-        mMonsterDataArr[2].HPWeight = 1.1968;
-
-        mMonsterDataArr[3] = new MonsterData();
-        mMonsterDataArr[3].Name = "Wolf";
-        mMonsterDataArr[3].ID = 3;
-        mMonsterDataArr[3].Attack = 9;
-        mMonsterDataArr[3].Defend = 1;
-        mMonsterDataArr[3].HPmax = 90;
-        mMonsterDataArr[3].HPcurrent = 90;
-        mMonsterDataArr[3].AttackWeight = 1.215;
-        mMonsterDataArr[3].DefendWeight = 1.2;
-        mMonsterDataArr[3].HPWeight = 1.208;
-        #endregion
+        mDataDummy = LoadCsvData("CSVFiles/MonsterData");
+        mMonsterDataArr = new MonsterData[mDataDummy.Length - 2];
+        for(int i = 0; i < mMonsterDataArr.Length; i++)
+        {
+            string[] splited = mDataDummy[i + 1].Split(',');
+            mMonsterDataArr[i] = new MonsterData();
+            mMonsterDataArr[i].Name = splited[0];
+            mMonsterDataArr[i].ID = int.Parse(splited[1]);
+            mMonsterDataArr[i].Attack = double.Parse(splited[2]);
+            mMonsterDataArr[i].Defend = double.Parse(splited[3]);
+            mMonsterDataArr[i].HPmax = double.Parse(splited[4]);
+            mMonsterDataArr[i].HPcurrent = double.Parse(splited[5]);
+            mMonsterDataArr[i].AttackWeight = double.Parse(splited[6]);
+            mMonsterDataArr[i].DefendWeight = double.Parse(splited[7]);
+            mMonsterDataArr[i].HPWeight = double.Parse(splited[8]);
+        }
     }
 
     public void MonsterSpawn()

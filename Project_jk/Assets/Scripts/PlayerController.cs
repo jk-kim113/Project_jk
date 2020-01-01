@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : DataLoader
 {
     public static PlayerController Instance;
 
@@ -29,6 +29,8 @@ public class PlayerController : MonoBehaviour
     private double mHPmax;
     private double mHPcurrent;
 
+    private string[] mDataDummy;
+
     private void Awake()
     {
         if(Instance == null)
@@ -40,135 +42,32 @@ public class PlayerController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        #region Playerdata
-        mPlayerDataArr = new PlayerData[6];
-
-        mPlayerDataArr[0] = new PlayerData();
-        mPlayerDataArr[0].Name = "Berserker";
-        mPlayerDataArr[0].ID = 0;
-        mPlayerDataArr[0].Level = 1;
-        mPlayerDataArr[0].EXPcurrent = 0;
-        mPlayerDataArr[0].EXPmax = 15;
-        mPlayerDataArr[0].Attack = 6;
-        mPlayerDataArr[0].Defend = 3;
-        mPlayerDataArr[0].Heal = 1;
-        mPlayerDataArr[0].AttackBase = 6;
-        mPlayerDataArr[0].AttackWeight = 1.2;
-        mPlayerDataArr[0].DefendBase = 3;
-        mPlayerDataArr[0].DefendWeight = 1.2;
-        mPlayerDataArr[0].HealBase = 1;
-        mPlayerDataArr[0].HealWeight = 1.2;
-        mPlayerDataArr[0].HPmax = 10;
-        mPlayerDataArr[0].HPcurrent = 10;
-        mPlayerDataArr[0].HPbase = 10;
-        mPlayerDataArr[0].HPWeight = 1.2;
-        mPlayerDataArr[0].BattleType = eBattleType.Attack;
-
-        mPlayerDataArr[1] = new PlayerData();
-        mPlayerDataArr[1].Name = "Paladin";
-        mPlayerDataArr[1].ID = 1;
-        mPlayerDataArr[1].Level = 1;
-        mPlayerDataArr[1].EXPcurrent = 0;
-        mPlayerDataArr[1].EXPmax = 15;
-        mPlayerDataArr[1].Attack = 6;
-        mPlayerDataArr[1].Defend = 1;
-        mPlayerDataArr[1].Heal = 3;
-        mPlayerDataArr[1].AttackBase = 6;
-        mPlayerDataArr[1].AttackWeight = 1.2;
-        mPlayerDataArr[1].DefendBase = 1;
-        mPlayerDataArr[1].DefendWeight = 1.2;
-        mPlayerDataArr[1].HealBase = 3;
-        mPlayerDataArr[1].HealWeight = 1.2;
-        mPlayerDataArr[1].HPmax = 10;
-        mPlayerDataArr[1].HPcurrent = 10;
-        mPlayerDataArr[1].HPbase = 10;
-        mPlayerDataArr[1].HPWeight = 1.2;
-        mPlayerDataArr[1].BattleType = eBattleType.Attack;
-
-        mPlayerDataArr[2] = new PlayerData();
-        mPlayerDataArr[2].Name = "Warrior";
-        mPlayerDataArr[2].ID = 2;
-        mPlayerDataArr[2].Level = 1;
-        mPlayerDataArr[2].EXPcurrent = 0;
-        mPlayerDataArr[2].EXPmax = 15;
-        mPlayerDataArr[2].Attack = 3;
-        mPlayerDataArr[2].Defend = 6;
-        mPlayerDataArr[2].Heal = 1;
-        mPlayerDataArr[2].AttackBase = 3;
-        mPlayerDataArr[2].AttackWeight = 1.2;
-        mPlayerDataArr[2].DefendBase = 6;
-        mPlayerDataArr[2].DefendWeight = 1.2;
-        mPlayerDataArr[2].HealBase = 1;
-        mPlayerDataArr[2].HealWeight = 1.2;
-        mPlayerDataArr[2].HPmax = 10;
-        mPlayerDataArr[2].HPcurrent = 10;
-        mPlayerDataArr[2].HPbase = 10;
-        mPlayerDataArr[2].HPWeight = 1.2;
-        mPlayerDataArr[2].BattleType = eBattleType.Defend;
-
-        mPlayerDataArr[3] = new PlayerData();
-        mPlayerDataArr[3].Name = "Guardian";
-        mPlayerDataArr[3].ID = 3;
-        mPlayerDataArr[3].Level = 1;
-        mPlayerDataArr[3].EXPcurrent = 0;
-        mPlayerDataArr[3].EXPmax = 15;
-        mPlayerDataArr[3].Attack = 1;
-        mPlayerDataArr[3].Defend = 6;
-        mPlayerDataArr[3].Heal = 3;
-        mPlayerDataArr[3].AttackBase = 1;
-        mPlayerDataArr[3].AttackWeight = 1.2;
-        mPlayerDataArr[3].DefendBase = 6;
-        mPlayerDataArr[3].DefendWeight = 1.2;
-        mPlayerDataArr[3].HealBase = 3;
-        mPlayerDataArr[3].HealWeight = 1.2;
-        mPlayerDataArr[3].HPmax = 10;
-        mPlayerDataArr[3].HPcurrent = 10;
-        mPlayerDataArr[3].HPbase = 10;
-        mPlayerDataArr[3].HPWeight = 1.2;
-        mPlayerDataArr[3].BattleType = eBattleType.Defend;
-
-        mPlayerDataArr[4] = new PlayerData();
-        mPlayerDataArr[4].Name = "Magician";
-        mPlayerDataArr[4].ID = 4;
-        mPlayerDataArr[4].Level = 1;
-        mPlayerDataArr[4].EXPcurrent = 0;
-        mPlayerDataArr[4].EXPmax = 15;
-        mPlayerDataArr[4].Attack = 3;
-        mPlayerDataArr[4].Defend = 1;
-        mPlayerDataArr[4].Heal = 6;
-        mPlayerDataArr[4].AttackBase = 3;
-        mPlayerDataArr[4].AttackWeight = 1.2;
-        mPlayerDataArr[4].DefendBase = 1;
-        mPlayerDataArr[4].DefendWeight = 1.2;
-        mPlayerDataArr[4].HealBase = 6;
-        mPlayerDataArr[4].HealWeight = 1.2;
-        mPlayerDataArr[4].HPmax = 10;
-        mPlayerDataArr[4].HPcurrent = 10;
-        mPlayerDataArr[4].HPbase = 10;
-        mPlayerDataArr[4].HPWeight = 1.2;
-        mPlayerDataArr[4].BattleType = eBattleType.Heal;
-
-        mPlayerDataArr[5] = new PlayerData();
-        mPlayerDataArr[5].Name = "Healer";
-        mPlayerDataArr[5].ID = 5;
-        mPlayerDataArr[5].Level = 1;
-        mPlayerDataArr[5].EXPcurrent = 0;
-        mPlayerDataArr[5].EXPmax = 15;
-        mPlayerDataArr[5].Attack = 1;
-        mPlayerDataArr[5].Defend = 3;
-        mPlayerDataArr[5].Heal = 6;
-        mPlayerDataArr[5].AttackBase = 1;
-        mPlayerDataArr[5].AttackWeight = 1.2;
-        mPlayerDataArr[5].DefendBase = 3;
-        mPlayerDataArr[5].DefendWeight = 1.2;
-        mPlayerDataArr[5].HealBase = 6;
-        mPlayerDataArr[5].HealWeight = 1.2;
-        mPlayerDataArr[5].HPmax = 10;
-        mPlayerDataArr[5].HPcurrent = 10;
-        mPlayerDataArr[5].HPbase = 10;
-        mPlayerDataArr[5].HPWeight = 1.2;
-        mPlayerDataArr[5].BattleType = eBattleType.Heal;
-        #endregion
+        mDataDummy = LoadCsvData("CSVFiles/PlayerData");
+        mPlayerDataArr = new PlayerData[mDataDummy.Length - 2];
+        for(int i = 0; i < mPlayerDataArr.Length; i++)
+        {
+            string[] splited = mDataDummy[i + 1].Split(',');
+            mPlayerDataArr[i] = new PlayerData();
+            mPlayerDataArr[i].Name = splited[0];
+            mPlayerDataArr[i].ID = int.Parse(splited[1]);
+            mPlayerDataArr[i].Level = int.Parse(splited[2]);
+            mPlayerDataArr[i].EXPcurrent = double.Parse(splited[3]);
+            mPlayerDataArr[i].EXPmax = double.Parse(splited[4]);
+            mPlayerDataArr[i].Attack = double.Parse(splited[5]);
+            mPlayerDataArr[i].Defend = double.Parse(splited[6]);
+            mPlayerDataArr[i].Heal = double.Parse(splited[7]);
+            mPlayerDataArr[i].AttackBase = double.Parse(splited[8]);
+            mPlayerDataArr[i].AttackWeight = double.Parse(splited[9]);
+            mPlayerDataArr[i].DefendBase = double.Parse(splited[10]);
+            mPlayerDataArr[i].DefendWeight = double.Parse(splited[11]);
+            mPlayerDataArr[i].HealBase = double.Parse(splited[12]);
+            mPlayerDataArr[i].HealWeight = double.Parse(splited[13]);
+            mPlayerDataArr[i].HPmax = double.Parse(splited[14]);
+            mPlayerDataArr[i].HPcurrent = double.Parse(splited[15]);
+            mPlayerDataArr[i].HPbase = double.Parse(splited[16]);
+            mPlayerDataArr[i].HPWeight = double.Parse(splited[17]);
+            mPlayerDataArr[i].BattleType = (eBattleType)int.Parse(splited[18]);
+        }
 
         mPlayerSpawnedList = new List<Player>();
 

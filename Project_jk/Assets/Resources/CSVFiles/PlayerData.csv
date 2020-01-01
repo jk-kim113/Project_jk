@@ -1,0 +1,7 @@
+Name,ID,Level,EXPcurrent,EXPmax,Attack,Defend,Heal,AttackBase,AttackWeight,DefendBase,DefendWeight,HealBase,HealWeight,Hpmax,Hpcurrent,HpBase,HpWeight,BattleType
+Berserker,0,1,0,15,6,3,1,6,1.2,3,1.2,1,1.2,10,10,10,1.2,0
+Paladin,1,1,0,15,6,1,3,6,1.2,1,1.2,3,1.2,10,10,10,1.2,0
+Worrior,2,1,0,15,3,6,1,3,1.2,6,1.2,1,1.2,10,10,10,1.2,1
+Guardian,3,1,0,15,1,6,3,1,1.2,6,1.2,3,1.2,10,10,10,1.2,1
+Magician,4,1,0,15,3,1,6,3,1.2,1,1.2,6,1.2,10,10,10,1.2,2
+Healer,5,1,0,15,1,3,6,1,1.2,3,1.2,6,1.2,10,10,10,1.2,2

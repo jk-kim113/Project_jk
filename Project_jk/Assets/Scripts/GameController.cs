@@ -8,9 +8,6 @@ public class GameController : MonoBehaviour
     public static GameController Instance;
 
     [SerializeField]
-    private BattleTable[] mBattleTable;
-
-    [SerializeField]
     private Button mTurnExitBtn;
 
     private void Awake()
