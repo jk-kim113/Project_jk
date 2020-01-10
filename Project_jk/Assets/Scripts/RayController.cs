@@ -31,7 +31,7 @@ public class RayController : MonoBehaviour
             if (hit.collider.gameObject.CompareTag("BattleTable"))
             {
                 mBattleTable = hit.collider.gameObject.GetComponent<BattleTable>();
-                if (mBattleTable.PlayerIsHere() && player.GetPlayerState() == ePlayerState.Battle)
+                if (mBattleTable.PlayerIsHere() && player.PlayerState == ePlayerState.Battle)
                 {
                     mBattleTable.StateChange();
                 }

@@ -2,47 +2,45 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ePlayerState
-{
-    Waiting,
-    Battle
-}
-
-public enum eBattleType
-{
-    Attack,
-    Defend,
-    Heal
-}
-
 public class Player : MonoBehaviour
 {   
     private int mID, mLevel;
     private double mATK, mDEF, mHEAL, mHPmax, mHPcurrent;
+    public double ATK { get { return mATK;} set { mATK = value;}}
+    public double DEF { get { return mDEF;} set { mDEF = value;}}
+    public double HPmax { get { return mHPmax;}}
+
     private eBattleType mBattleType;
 
+    private int mFieldCondition;
+    public int FieldCondition { get { return mFieldCondition;} set { mFieldCondition = value;}}
+
+    private int mFieldCycle;
+    public int FieldCycle { get { return mFieldCycle;} set { mFieldCycle = value;}}
+
     private ePlayerState mPlayerState;
+    public ePlayerState PlayerState { get { return mPlayerState;}}
 
     private Vector3 mStartPos;
 
     private BattleTable mBattleTable;
 
     private int mBattleCount;
-    public int BattleCount
-    {
-        get
-        {
-            return mBattleCount;
-        }
-        set
-        {
-            mBattleCount = value;
-        }
-    }
+    public int BattleCount { get { return mBattleCount;} set { mBattleCount = value;}}
+
+    private bool bIsMove;
+    public bool IsMove { get { return bIsMove; } }
 
     private void Awake()
     {
+        
+    }
+
+    private void OnEnable()
+    {
         mPlayerState = ePlayerState.Waiting;
+        mFieldCycle = 0;
+        bIsMove = true;
     }
 
     private void Start()
@@ -67,9 +65,24 @@ public class Player : MonoBehaviour
         mHPcurrent = hpcurrent;
     }
 
-    public ePlayerState GetPlayerState()
+    public void GetDamage(double value)
     {
-        return mPlayerState;
+        if(value < 0)
+        {
+            Debug.LogError("Wrong Damage Value : " + value);
+        }
+
+        mHPcurrent -= value;
+
+        if(mHPcurrent <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    public void MoveChange()
+    {
+        bIsMove = !bIsMove;
     }
 
     public void RaySelected()
@@ -131,16 +144,31 @@ public class Player : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if(!bIsMove)
+        {
+            return;
+        }
+
         mBattleTable = RayController.Instance.DetectBattleTable(this);
     }
 
     private void OnMouseDrag()
-    {   
+    {
+        if (!bIsMove)
+        {
+            return;
+        }
+
         mBattleTable = RayController.Instance.DetectBattleTable(this);
     }
 
     private void OnMouseUp()
     {
+        if (!bIsMove)
+        {
+            return;
+        }
+
         if (mBattleTable != null)
         {
             if(!mBattleTable.PlayerIsHere())

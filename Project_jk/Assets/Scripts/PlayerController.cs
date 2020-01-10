@@ -7,10 +7,13 @@ public class PlayerController : DataLoader
 {
     public static PlayerController Instance;
 
+#pragma warning disable 0649
     [SerializeField]
     private Player[] mPlayerPrefabArr;
     [SerializeField]
     private Transform[] mPlayerSpawnPosArr;
+#pragma warning restore
+
     private List<Player> mPlayerSpawnedList;
 
     private PlayerData[] mPlayerDataArr;
@@ -75,7 +78,7 @@ public class PlayerController : DataLoader
         mHPcurrent = mHPmax;
     }
 
-    private void Start()
+    public void SpawnPlayers()
     {
         for (int i = 0; i < mPlayerPrefabArr.Length; i++)
         {
@@ -106,11 +109,86 @@ public class PlayerController : DataLoader
         UIController.Instance.ShowPlayerGaugeBar(mHPcurrent, mHPmax);
     }
 
+    public void GetFieldEffect(eFieldType fieldtype, int cycle, double cycleValue, int condition, double conditionValue)
+    {
+        for (int i = 0; i < mPlayerSpawnedList.Count; i++)
+        {
+            if (mPlayerSpawnedList[i].PlayerState == ePlayerState.Battle)
+            {
+                switch (fieldtype)
+                {
+                    case eFieldType.Normal:
+                        break;
+                    case eFieldType.Fire:
+
+                        mPlayerSpawnedList[i].FieldCycle++;
+                        if(mPlayerSpawnedList[i].FieldCycle >= cycle)
+                        {
+                            mPlayerSpawnedList[i].ATK *= (100 - cycleValue) / 100;
+                            mPlayerSpawnedList[i].FieldCycle = 0;
+                            mPlayerSpawnedList[i].FieldCondition++;
+                        }
+                        if(mPlayerSpawnedList[i].FieldCondition >= condition)
+                        {
+                            mPlayerSpawnedList[i].GetDamage(mPlayerSpawnedList[i].HPmax * (conditionValue / 100));
+                            mPlayerSpawnedList[i].FieldCondition = 0;
+                        }
+                        
+                        break;
+                    case eFieldType.Ice:
+                        if(!mPlayerSpawnedList[i].IsMove)
+                        {
+                            if(mPlayerSpawnedList[i].FieldCondition >= 3)
+                            {
+                                mPlayerSpawnedList[i].MoveChange();
+                            }
+
+                            mPlayerSpawnedList[i].FieldCondition++;
+                        }
+
+                        mPlayerSpawnedList[i].FieldCycle++;
+                        if (mPlayerSpawnedList[i].FieldCycle >= cycle)
+                        {
+                            mPlayerSpawnedList[i].DEF *= (100 - cycleValue) / 100;
+                            mPlayerSpawnedList[i].FieldCycle = 0;
+                            mPlayerSpawnedList[i].FieldCondition++;
+                        }
+                        if (mPlayerSpawnedList[i].FieldCondition >= condition)
+                        {
+                            mPlayerSpawnedList[i].MoveChange();
+                            mPlayerSpawnedList[i].FieldCondition = 0;
+                        }
+
+                        break;
+                    case eFieldType.Poison:
+
+                        mPlayerSpawnedList[i].FieldCycle++;
+                        if (mPlayerSpawnedList[i].FieldCycle >= cycle)
+                        {
+                            mPlayerDataArr[i].HPcurrent -= cycleValue;
+                            mPlayerSpawnedList[i].FieldCycle = 0;
+                            mPlayerSpawnedList[i].FieldCondition++;
+                        }
+                        if (mPlayerSpawnedList[i].FieldCondition >= condition)
+                        {
+                            mPlayerSpawnedList[i].GetDamage(cycleValue * (1 + conditionValue / 100));
+                            mPlayerSpawnedList[i].FieldCondition = 0;
+                        }
+
+                        break;
+                    default:
+                        Debug.LogError("Wrong Field Type : " + fieldtype);
+                        break;
+                }
+            }
+        }
+    }
+
     public void NextBattleType()
     {
         for (int i = 0; i < mPlayerSpawnedList.Count; i++)
         {
-            if (mPlayerSpawnedList[i].GetPlayerState() == ePlayerState.Battle)
+            if (mPlayerSpawnedList[i].PlayerState == ePlayerState.Battle)
             {
                 mPlayerSpawnedList[i].NextState();
             }
@@ -187,27 +265,4 @@ public class PlayerController : DataLoader
             }
         }
     }
-}
-
-public class PlayerData
-{
-    public string Name;
-    public int ID;
-    public int Level;
-    public double EXPcurrent;
-    public double EXPmax;
-    public double Attack;
-    public double Defend;
-    public double Heal;
-    public double AttackBase;
-    public double AttackWeight;
-    public double DefendBase;
-    public double DefendWeight;
-    public double HealBase;
-    public double HealWeight;
-    public double HPmax;
-    public double HPcurrent;
-    public double HPbase;
-    public double HPWeight;
-    public eBattleType BattleType;
 }

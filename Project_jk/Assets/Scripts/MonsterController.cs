@@ -7,8 +7,14 @@ public class MonsterController : DataLoader
 {
     public static MonsterController Instance;
 
+#pragma warning disable 0649
     [SerializeField]
     private Monster[] mMonsterPrefabArr;
+
+    [SerializeField]
+    private Transform mMonsterSpawnPos;
+#pragma warning restore
+
     private MonsterData[] mMonsterDataArr;
 
     private int mMonsterIndex;
@@ -47,11 +53,14 @@ public class MonsterController : DataLoader
         }
     }
 
-    public void MonsterSpawn()
+    public void SpawnMonster()
     {
         mMonsterIndex = UnityEngine.Random.Range(0, mMonsterDataArr.Length);
 
         mMonsterSpawned = Instantiate(mMonsterPrefabArr[mMonsterIndex]);
+
+        mMonsterSpawned.transform.position = mMonsterSpawnPos.position;
+
         mMonsterSpawned.Initialize(
             mMonsterDataArr[mMonsterIndex].Name,
             mMonsterDataArr[mMonsterIndex].ID,
@@ -87,17 +96,4 @@ public class MonsterController : DataLoader
 
         GameController.Instance.ClearStage();
     }
-}
-
-public class MonsterData
-{
-    public string Name;
-    public int ID;
-    public double Attack;
-    public double Defend;
-    public double HPmax;
-    public double HPcurrent;
-    public double AttackWeight;
-    public double DefendWeight;
-    public double HPWeight;
 }

@@ -7,8 +7,10 @@ public class GameController : MonoBehaviour
 {
     public static GameController Instance;
 
+#pragma warning disable 0649
     [SerializeField]
     private Button mTurnExitBtn;
+#pragma warning restore
 
     private void Awake()
     {
@@ -24,14 +26,16 @@ public class GameController : MonoBehaviour
 
     void Start()
     {
-        MonsterController.Instance.MonsterSpawn();
-
         if (mTurnExitBtn != null)
             mTurnExitBtn.onClick.AddListener(() => {
 
                 StartCoroutine(TurnExchange());
 
             });
+
+        FieldController.Instance.SpawnField();
+        MonsterController.Instance.SpawnMonster();
+        PlayerController.Instance.SpawnPlayers();
     }
 
     private IEnumerator TurnExchange()
@@ -50,12 +54,16 @@ public class GameController : MonoBehaviour
 
         PlayerController.Instance.NextBattleType();
 
+        FieldController.Instance.FieldEffect();
+
         mTurnExitBtn.gameObject.SetActive(true);
     }
 
     public void ClearStage()
     {
         PlayerController.Instance.AddEXP();
+
         //UI Update
+        //Field Update
     }
 }

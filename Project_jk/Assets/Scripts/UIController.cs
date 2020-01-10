@@ -8,18 +8,23 @@ public class UIController : MonoBehaviour
 {
     public static UIController Instance;
 
+#pragma warning disable 0649
     [SerializeField]
     private GameObject mPlayerInfoObj;
-    private Text[] mPlayerInfoText;
-
     [SerializeField]
     private GameObject mTotalStatusObj;
-    private Text[] mTotalStatusText;
-
     [SerializeField]
     private GaugeBar mMonsterGaugeBar;
     [SerializeField]
     private GaugeBar mPlayerGaugeBar;
+    [SerializeField]
+    private Text mFieldNameText;
+    [SerializeField]
+    private Text mFieldInfoText;
+#pragma warning restore
+
+    private Text[] mPlayerInfoText;
+    private Text[] mTotalStatusText;
 
     private void Awake()
     {
@@ -72,5 +77,11 @@ public class UIController : MonoBehaviour
         float progress = (float)(current / max);
         string gaugetext = string.Format("{0} / {1}", UnitBuilder.GetUnitStr(current), UnitBuilder.GetUnitStr(max));
         mPlayerGaugeBar.ShowHPGauge(progress, gaugetext);
+    }
+
+    public void ShowFieldStatus(string name, string Info, int cycle, double cycleValue, int condition, double conditionValue)
+    {
+        mFieldNameText.text = "Name : " + name;
+        mFieldInfoText.text = string.Format(Info, cycle, UnitBuilder.GetUnitStr(cycleValue), condition, UnitBuilder.GetUnitStr(conditionValue));
     }
 }
