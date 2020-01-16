@@ -71,6 +71,11 @@ public class MonsterController : DataLoader
             mMonsterDataArr[mMonsterIndex].AttackWeight,
             mMonsterDataArr[mMonsterIndex].DefendWeight,
             mMonsterDataArr[mMonsterIndex].HPWeight);
+
+        UIController.Instance.ShowMonsterInfo(
+            mMonsterDataArr[mMonsterIndex].Name,
+            mMonsterDataArr[mMonsterIndex].Attack,
+            mMonsterDataArr[mMonsterIndex].Defend);
     }
 
     public void GetDamage(double damage)

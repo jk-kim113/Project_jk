@@ -14,6 +14,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject mTotalStatusObj;
     [SerializeField]
+    private GameObject mMonsterInfoObj;
+    [SerializeField]
     private GaugeBar mMonsterGaugeBar;
     [SerializeField]
     private GaugeBar mPlayerGaugeBar;
@@ -25,6 +27,7 @@ public class UIController : MonoBehaviour
 
     private Text[] mPlayerInfoText;
     private Text[] mTotalStatusText;
+    private Text[] mMonsterInfoText;
 
     private void Awake()
     {
@@ -39,6 +42,7 @@ public class UIController : MonoBehaviour
 
         mPlayerInfoText = mPlayerInfoObj.GetComponentsInChildren<Text>();
         mTotalStatusText = mTotalStatusObj.GetComponentsInChildren<Text>();
+        mMonsterInfoText = mMonsterInfoObj.GetComponentsInChildren<Text>();
 
         ShowTotalStatus(0, 0, 0);
     }
@@ -83,5 +87,12 @@ public class UIController : MonoBehaviour
     {
         mFieldNameText.text = "Name : " + name;
         mFieldInfoText.text = string.Format(Info, cycle, UnitBuilder.GetUnitStr(cycleValue), condition, UnitBuilder.GetUnitStr(conditionValue));
+    }
+
+    public void ShowMonsterInfo(string name, double atk, double def)
+    {
+        mMonsterInfoText[1].text = name;
+        mMonsterInfoText[2].text = "ATK : " + UnitBuilder.GetUnitStr(atk);
+        mMonsterInfoText[3].text = "DEF : " + UnitBuilder.GetUnitStr(def);
     }
 }
