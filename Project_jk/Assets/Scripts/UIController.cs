@@ -47,7 +47,7 @@ public class UIController : MonoBehaviour
         ShowTotalStatus(0, 0, 0);
     }
 
-    public void ShowPlayerInfo(eBattleType state, double atk, double def, double heal)
+    public void ShowPlayerInfo(eBattleType state, double atk, double def, double heal, double hpCurrent, double hpMax, int conditionCurrent)
     {
         mPlayerInfoObj.SetActive(true);
 
@@ -55,6 +55,8 @@ public class UIController : MonoBehaviour
         mPlayerInfoText[1].text = "ATK : " + UnitBuilder.GetUnitStr(atk);
         mPlayerInfoText[2].text = "DEF : " + UnitBuilder.GetUnitStr(def);
         mPlayerInfoText[3].text = "HEAL : " + UnitBuilder.GetUnitStr(heal);
+        mPlayerInfoText[4].text = string.Format("HP : {0}/{1}", UnitBuilder.GetUnitStr(hpCurrent), UnitBuilder.GetUnitStr(hpMax));
+        mPlayerInfoText[5].text = string.Format("Field : {0}", conditionCurrent);
     }
 
     public void OffPlayerInfo()

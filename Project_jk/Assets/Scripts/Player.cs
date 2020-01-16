@@ -31,11 +31,6 @@ public class Player : MonoBehaviour
     private bool bIsMove;
     public bool IsMove { get { return bIsMove; } }
 
-    private void Awake()
-    {
-        
-    }
-
     private void OnEnable()
     {
         mPlayerState = ePlayerState.Waiting;
@@ -87,7 +82,7 @@ public class Player : MonoBehaviour
 
     public void RaySelected()
     {
-        UIController.Instance.ShowPlayerInfo(mBattleType, mATK, mDEF, mHEAL);
+        UIController.Instance.ShowPlayerInfo(mBattleType, mATK, mDEF, mHEAL, mHPcurrent, mHPmax, mFieldCondition);
     }
 
     public void NextState()
