@@ -325,6 +325,8 @@ public class PlayerController : DataLoader
     public void EffectHPmaxByCard(double value)
     {
         mHPmax = mOriginalHPmax * value;
+
+        UIController.Instance.ShowPlayerGaugeBar(mHPcurrent, mHPmax);
     }
 
     public void EffectHealByCard()

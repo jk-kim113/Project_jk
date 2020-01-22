@@ -78,7 +78,7 @@ public class CardEffectController : MonoBehaviour
             PlayerController.Instance.EffectHPmaxByCard(1);
         }
 
-        if(!bID1Card || !bID2Card)
+        if(!bID1Card && !bID2Card)
         {
             mCardOrder++;
             mCardID = mCardPassDataList[mCardOrder].ID;
@@ -165,7 +165,7 @@ public class CardEffectController : MonoBehaviour
 
     private void ID1CardEffect()
     {
-        if(mID1CardCount > 3)
+        if(mID1CardCount >= 3)
         {
             bID1Card = false;
             NextCardEffect();
@@ -180,11 +180,11 @@ public class CardEffectController : MonoBehaviour
     private void ID2CardEffect()
     {
         bID2Card = true;
-        if(mID2CardCount < 3)
+        if(mID2CardCount <= 3)
         {
             MonsterController.Instance.EffectDEFbyCard(1.05);
         }
-        else if(mID2CardCount < 8)
+        else if(mID2CardCount <= 8)
         {
             MonsterController.Instance.EffectDEFbyCard(0.95);
         }

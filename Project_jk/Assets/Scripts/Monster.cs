@@ -45,6 +45,8 @@ public class Monster : MonoBehaviour
     {
         mATK = atk;
         mDEF = def;
+
+        UIController.Instance.ShowMonsterInfo(mName, mATK, mDEF);
     }
 
     public void GetDamage(double damage)
