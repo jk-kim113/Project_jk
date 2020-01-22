@@ -65,12 +65,26 @@ public class CardController : MonoBehaviour
         mCardElementList = new List<CardElement>();
         mSelectedCardDic = new Dictionary<int, CardElement>();
 
+        SpawnCard();
+    }
+
+    private void SpawnCard()
+    {
         for (int i = 0; i < mCardDataArr.Length; i++)
         {
             CardElement cardElement = Instantiate(mCardElementPrefab, mScrollPos1);
             cardElement.Init(mCardDataArr[i].ID, mCardDataArr[i].Contents, AddCard);
             mCardElementList.Add(cardElement);
         }
+
+        for(int i = 0; i < DataPassing.Instance.CardDataPassingList.Count; i++)
+        {
+            int id = DataPassing.Instance.CardDataPassingList[i].ID;
+
+            AddCard(id);
+        }
+
+        DataPassing.Instance.CardDataPassingList.Clear();
     }
 
     public void AddCard(int id)
