@@ -35,16 +35,16 @@ public class Monster : MonoBehaviour
         mATKWeight = atkweight;
         mDEFWeight = defweight;
         mHPWeight = hpweight;
+        mHPmax = hpmax;
+        mHPcurrent = mHPmax;
 
-        Renew(atk, def, hpmax, hpcurrent);
+        Renew(atk, def);
     }
 
-    public void Renew(double atk, double def, double hpmax, double hpcurrent)
+    public void Renew(double atk, double def)
     {
         mATK = atk;
         mDEF = def;
-        mHPmax = hpmax;
-        mHPcurrent = mHPmax;
     }
 
     public void GetDamage(double damage)

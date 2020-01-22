@@ -75,6 +75,11 @@ public class FieldController : DataLoader
 
     public void FieldEffect()
     {
+        if(CardEffectController.Instance.ID1Card)
+        {
+            return;
+        }
+
         PlayerController.Instance.GetFieldEffect(
             (eFieldType)mSpawnedFieldID,
             mFieldDataArr[mSpawnedFieldID].Cycle,

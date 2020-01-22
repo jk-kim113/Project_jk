@@ -101,4 +101,20 @@ public class MonsterController : DataLoader
 
         GameController.Instance.ClearStage();
     }
+
+    public void EffectDEFbyCard(double value)
+    {
+        mMonsterSpawned.Renew(
+            mMonsterDataArr[mMonsterIndex].Attack,
+            mMonsterDataArr[mMonsterIndex].Defend * value
+            );
+    }
+
+    public void EffectATKbyCard(double value)
+    {
+        mMonsterSpawned.Renew(
+            mMonsterDataArr[mMonsterIndex].Attack * value,
+            mMonsterDataArr[mMonsterIndex].Defend
+            );
+    }
 }

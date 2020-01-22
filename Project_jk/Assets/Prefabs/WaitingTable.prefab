@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4737403990314630943}
   - component: {fileID: 7098778998069027380}
   - component: {fileID: 8249689889439301673}
-  - component: {fileID: 1889336846820081003}
   m_Layer: 0
   m_Name: WaitingTable
   m_TagString: WaitingTable
@@ -93,16 +92,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 12c5dda9a6b291d459f5c2bd03f0c8de, type: 3}
---- !u!114 &1889336846820081003
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1298164426153231579}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 194cfed1ff3cee14e8f87b04a5178f35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mOrderNumber: 1

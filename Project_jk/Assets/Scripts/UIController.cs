@@ -23,6 +23,8 @@ public class UIController : MonoBehaviour
     private Text mFieldNameText;
     [SerializeField]
     private Text mFieldInfoText;
+    [SerializeField]
+    private Text mCardConstentsText;
 #pragma warning restore
 
     private Text[] mPlayerInfoText;
@@ -96,5 +98,10 @@ public class UIController : MonoBehaviour
         mMonsterInfoText[1].text = name;
         mMonsterInfoText[2].text = "ATK : " + UnitBuilder.GetUnitStr(atk);
         mMonsterInfoText[3].text = "DEF : " + UnitBuilder.GetUnitStr(def);
+    }
+
+    public void ShowCardData(string cardContents)
+    {
+        mCardConstentsText.text = cardContents;
     }
 }

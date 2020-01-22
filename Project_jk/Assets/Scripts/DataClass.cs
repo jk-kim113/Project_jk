@@ -69,3 +69,9 @@ public class FieldData
     public int Condition;
     public double ConditionValue;
 }
+
+public class CardData
+{
+    public int ID;
+    public string Contents;
+}

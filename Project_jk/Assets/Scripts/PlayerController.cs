@@ -25,12 +25,22 @@ public class PlayerController : DataLoader
         {
             return mTotalAtk;
         }
+        set
+        {
+            mTotalAtk = value;
+            UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
+        }
     }
     private double mTotalDef;
     private double mTotalHeal;
 
     private double mHPmax;
     private double mHPcurrent;
+
+    private double mOriginalHPmax;
+
+    private double mPlayerAtk;
+    public double PlayerAtk { get { return mPlayerAtk; } }
 
     private string[] mDataDummy;
 
@@ -76,6 +86,8 @@ public class PlayerController : DataLoader
 
         mHPmax = 100;
         mHPcurrent = mHPmax;
+
+        mOriginalHPmax = mHPmax;
     }
 
     public void SpawnPlayers()
@@ -165,7 +177,7 @@ public class PlayerController : DataLoader
                         mPlayerSpawnedList[i].FieldCycle++;
                         if (mPlayerSpawnedList[i].FieldCycle >= cycle)
                         {
-                            mPlayerDataArr[i].HPcurrent -= cycleValue;
+                            mPlayerSpawnedList[i].GetDamage(cycleValue);
                             mPlayerSpawnedList[i].FieldCycle = 0;
                             mPlayerSpawnedList[i].FieldCondition++;
                         }
@@ -200,7 +212,7 @@ public class PlayerController : DataLoader
         switch (state)
         {
             case eBattleType.Attack:
-                mTotalAtk += value;
+                mPlayerAtk += value;
                 break;
             case eBattleType.Defend:
                 mTotalDef += value;
@@ -212,6 +224,7 @@ public class PlayerController : DataLoader
                 break;
         }
 
+        mTotalAtk = mPlayerAtk;
         UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
     }
 
@@ -220,7 +233,7 @@ public class PlayerController : DataLoader
         switch (state)
         {
             case eBattleType.Attack:
-                mTotalAtk -= value;
+                mPlayerAtk -= value;
                 break;
             case eBattleType.Defend:
                 mTotalDef -= value;
@@ -232,6 +245,7 @@ public class PlayerController : DataLoader
                 break;
         }
 
+        mTotalAtk = mPlayerAtk;
         UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
     }
 
@@ -262,6 +276,67 @@ public class PlayerController : DataLoader
                     mPlayerDataArr[i].Heal,
                     mPlayerDataArr[i].HPmax,
                     mPlayerDataArr[i].HPcurrent);
+            }
+        }
+    }
+
+    public bool CheckAllBattleState()
+    {
+        int battlePlayer = 0;
+        int attackPlayer = 0;
+
+        for(int i = 0; i < mPlayerSpawnedList.Count; i++)
+        {
+            if(mPlayerSpawnedList[i].PlayerState == ePlayerState.Battle )
+            {
+                battlePlayer++;
+                if(mPlayerSpawnedList[i].BattleType == eBattleType.Attack)
+                {
+                    attackPlayer++;
+                }
+            }
+        }
+
+        if(battlePlayer == attackPlayer && battlePlayer != 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void EffectATKbyCard(double value)
+    {
+        mTotalAtk = value;
+        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
+    }
+
+    public void EffectDeIcebyCard()
+    {
+        for(int i = 0; i < mPlayerSpawnedList.Count; i++)
+        {
+            if(!mPlayerSpawnedList[i].IsMove)
+            {
+                mPlayerSpawnedList[i].MoveChange();
+            }
+        }
+    }
+
+    public void EffectHPmaxByCard(double value)
+    {
+        mHPmax = mOriginalHPmax * value;
+    }
+
+    public void EffectHealByCard()
+    {
+        for (int i = 0; i < mPlayerSpawnedList.Count; i++)
+        {
+            if (mPlayerSpawnedList[i].PlayerState == ePlayerState.Waiting)
+            {
+                if (mPlayerSpawnedList[i].HPcurrent < mPlayerSpawnedList[i].HPmax * 0.5)
+                {
+                    mPlayerSpawnedList[i].Healing(mPlayerSpawnedList[i].HPmax * 0.3);
+                }
             }
         }
     }

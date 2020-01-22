@@ -12,6 +12,8 @@ public class GameController : MonoBehaviour
     private Button mTurnExitBtn;
 #pragma warning restore
 
+    
+
     private void Awake()
     {
         if(Instance == null)
@@ -22,6 +24,8 @@ public class GameController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        
     }
 
     void Start()
@@ -33,6 +37,7 @@ public class GameController : MonoBehaviour
 
             });
 
+        CardEffectController.Instance.SpawnCardEffect();
         FieldController.Instance.SpawnField();
         MonsterController.Instance.SpawnMonster();
         PlayerController.Instance.SpawnPlayers();
@@ -57,6 +62,8 @@ public class GameController : MonoBehaviour
         FieldController.Instance.FieldEffect();
 
         mTurnExitBtn.gameObject.SetActive(true);
+
+        CardEffectController.Instance.NextCardEffect();
     }
 
     public void ClearStage()

@@ -9,8 +9,10 @@ public class Player : MonoBehaviour
     public double ATK { get { return mATK;} set { mATK = value;}}
     public double DEF { get { return mDEF;} set { mDEF = value;}}
     public double HPmax { get { return mHPmax;}}
+    public double HPcurrent { get { return mHPcurrent;}}
 
     private eBattleType mBattleType;
+    public eBattleType BattleType { get { return mBattleType;}}
 
     private int mFieldCondition;
     public int FieldCondition { get { return mFieldCondition;} set { mFieldCondition = value;}}
@@ -73,6 +75,16 @@ public class Player : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+    }
+
+    public void Healing(double value)
+    {
+        if(value < 0)
+        {
+            Debug.LogError("Wrong Damage Value : " + value);
+        }
+
+        mHPcurrent += value;
     }
 
     public void MoveChange()
@@ -174,6 +186,7 @@ public class Player : MonoBehaviour
 
                         transform.position = mBattleTable.transform.position + Vector3.up * 0.5f;
                         mPlayerState = ePlayerState.Battle;
+                        
                         CurrentBattleState(mBattleType);
                         mBattleTable.StateChange();
 
