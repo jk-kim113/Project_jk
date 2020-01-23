@@ -63,7 +63,12 @@ public class CardEffectController : MonoBehaviour
 
     public void NextCardEffect()
     {
-        if(mCardOrder >= mCardPassDataList.Count)
+        if (mCardPassDataList.Count == 0)
+        {
+            return;
+        }
+
+        if (mCardOrder >= mCardPassDataList.Count)
         {
             mCardOrder = -1;
         }

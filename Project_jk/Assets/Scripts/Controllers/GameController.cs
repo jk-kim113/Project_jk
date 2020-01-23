@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class GameController : MonoBehaviour
 #pragma warning disable 0649
     [SerializeField]
     private Button mTurnExitBtn;
+    [SerializeField]
+    private Image mSceneExitPanel;
 #pragma warning restore
-
-    
 
     private void Awake()
     {
@@ -25,7 +26,7 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
 
-        
+        mSceneExitPanel.gameObject.SetActive(false);
     }
 
     void Start()
@@ -72,5 +73,20 @@ public class GameController : MonoBehaviour
 
         //UI Update
         //Field Update
+    }
+
+    public void SceneExitButton()
+    {
+        mSceneExitPanel.gameObject.SetActive(true);
+    }
+
+    public void SceneExitYesBtn()
+    {
+        SceneManager.LoadScene("Lobby");
+    }
+
+    public void SceneExitNoBtn()
+    {
+        mSceneExitPanel.gameObject.SetActive(false);
     }
 }
