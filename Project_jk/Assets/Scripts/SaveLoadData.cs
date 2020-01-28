@@ -57,6 +57,7 @@ public class SaveLoadData : MonoBehaviour
         }
         else
         {
+            Debug.Log("No Save Data");
             mSaveData = new SaveData();
             mSaveData.PlayerLevel = new int[StaticValue.PLAYER_LEVEL_LENGTH];
 

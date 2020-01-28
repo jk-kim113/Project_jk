@@ -20,4 +20,9 @@ public class BattleTable : MonoBehaviour
     {
         IsPlayer = !IsPlayer;
     }
+
+    public void ResetGame()
+    {
+        IsPlayer = false;
+    }
 }

@@ -87,6 +87,14 @@ public class MonsterController : DataLoader
             mMonsterDataArr[mMonsterIndex].Defend);
     }
 
+    public void SetActiveFalse()
+    {
+        if(mMonsterSpawned != null)
+        {
+            mMonsterSpawned.gameObject.SetActive(false);
+        }
+    }
+
     public void GetDamage(double damage)
     {
         mMonsterSpawned.GetDamage(damage);
@@ -99,6 +107,8 @@ public class MonsterController : DataLoader
 
     public void DeadSpawnedMonster()
     {
+        GameController.Instance.ClearStage();
+
         for (int i = 0; i < mMonsterDataArr.Length; i++)
         {
             CalculateStatus(i);
@@ -107,8 +117,6 @@ public class MonsterController : DataLoader
             DEF[i] = mMonsterDataArr[i].Defend;
             HPMAX[i] = mMonsterDataArr[i].HPmax;
         }
-
-        GameController.Instance.ClearStage();
     }
 
     private void CalculateStatus(int i)

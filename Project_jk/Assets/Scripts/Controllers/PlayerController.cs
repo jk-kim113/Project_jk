@@ -9,9 +9,9 @@ public class PlayerController : DataLoader
 
 #pragma warning disable 0649
     [SerializeField]
-    private Player[] mPlayerPrefabArr;
-    [SerializeField]
     private Transform[] mPlayerSpawnPosArr;
+    [SerializeField]
+    private PlayerPool mPlayerPool;
 #pragma warning restore
 
     private List<Player> mPlayerSpawnedList;
@@ -98,9 +98,11 @@ public class PlayerController : DataLoader
 
     public void SpawnPlayers()
     {
-        for (int i = 0; i < mPlayerPrefabArr.Length; i++)
+        mPlayerSpawnedList.Clear();
+
+        for (int i = 0; i < mPlayerDataArr.Length; i++)
         {
-            Player player = Instantiate(mPlayerPrefabArr[i]);
+            Player player = mPlayerPool.GetFromPool(i);
             player.transform.position = mPlayerSpawnPosArr[i].position;
             player.Initialize(
                 mPlayerDataArr[i].ID,
@@ -116,6 +118,14 @@ public class PlayerController : DataLoader
 
         bIsSpawnFinish = true;
         UIController.Instance.ShowPlayerGaugeBar(mHPcurrent, mHPmax);
+    }
+
+    public void SetActiveFalse()
+    {
+        for(int i = 0; i < mPlayerSpawnedList.Count; i++)
+        {
+            mPlayerSpawnedList[i].gameObject.SetActive(false);
+        }
     }
 
     public void GetDamage(double value)

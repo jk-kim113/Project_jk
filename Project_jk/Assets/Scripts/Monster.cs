@@ -23,7 +23,7 @@ public class Monster : MonoBehaviour
         mAnimator = GetComponent<Animator>();
     }
 
-    private void Start()
+    private void OnEnable()
     {
         UIController.Instance.ShowMonsterGaugeBar(mHPcurrent, mHPmax);
     }
@@ -37,6 +37,8 @@ public class Monster : MonoBehaviour
         mHPWeight = hpweight;
         mHPmax = hpmax;
         mHPcurrent = mHPmax;
+
+        UIController.Instance.ShowMonsterGaugeBar(mHPcurrent, mHPmax);
 
         Renew(atk, def);
     }
@@ -68,10 +70,5 @@ public class Monster : MonoBehaviour
         }
 
         UIController.Instance.ShowMonsterGaugeBar(mHPcurrent, mHPmax);
-    }
-
-    public void SetFalseDeadMonster()
-    {
-        gameObject.SetActive(false);
     }
 }

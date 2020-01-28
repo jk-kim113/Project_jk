@@ -19,7 +19,7 @@ public class ObjPool<T> : MonoBehaviour where T : Component
         }
     }
     
-    void Start()
+    void Awake()
     {
         PoolSetup();
     }

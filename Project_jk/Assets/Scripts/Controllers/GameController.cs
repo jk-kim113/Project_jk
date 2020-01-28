@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour
     private Image mTurnExitPanel;
     [SerializeField]
     private Toggle mAutoTurnToggle;
+    [SerializeField]
+    private BattleTable[] mBattleTable;
 #pragma warning restore
     
     public int StageLevel { get { return SaveLoadData.Instance.SaveData.StageLevel; } }
@@ -50,10 +52,20 @@ public class GameController : MonoBehaviour
         SpawnInGame();
 
         StartCoroutine(LoadData());
+
+        Debug.Log(StageLevel);
     }
 
     public void SpawnInGame()
     {
+        for(int i = 0; i < mBattleTable.Length; i++)
+        {
+            mBattleTable[i].ResetGame();
+        }
+
+        PlayerController.Instance.SetActiveFalse();
+        MonsterController.Instance.SetActiveFalse();
+
         CardEffectController.Instance.SpawnCardEffect();
         FieldController.Instance.SpawnField();
         MonsterController.Instance.SpawnMonster();
