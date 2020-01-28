@@ -13,7 +13,13 @@ public class GameController : MonoBehaviour
     private Button mTurnExitBtn;
     [SerializeField]
     private Image mSceneExitPanel;
+    [SerializeField]
+    private Image mTurnExitPanel;
+    [SerializeField]
+    private Toggle mAutoTurnToggle;
 #pragma warning restore
+    
+    public int StageLevel { get { return SaveLoadData.Instance.SaveData.StageLevel; } }
 
     private void Awake()
     {
@@ -27,6 +33,8 @@ public class GameController : MonoBehaviour
         }
 
         mSceneExitPanel.gameObject.SetActive(false);
+        mTurnExitPanel.gameObject.SetActive(false);
+        mAutoTurnToggle.isOn = false;
     }
 
     void Start()
@@ -38,10 +46,36 @@ public class GameController : MonoBehaviour
 
             });
 
+
+        SpawnInGame();
+
+        StartCoroutine(LoadData());
+    }
+
+    public void SpawnInGame()
+    {
         CardEffectController.Instance.SpawnCardEffect();
         FieldController.Instance.SpawnField();
         MonsterController.Instance.SpawnMonster();
         PlayerController.Instance.SpawnPlayers();
+
+        mTurnExitPanel.gameObject.SetActive(false);
+    }
+
+    private IEnumerator LoadData()
+    {
+        WaitForSeconds one = new WaitForSeconds(.1f);
+
+        while(!PlayerController.Instance.IsSpawnFinish || !MonsterController.Instance.IsSpawnFinish)
+        {
+            yield return one;
+        }
+
+        PlayerController.Instance.Load(SaveLoadData.Instance.SaveData.PlayerLevel);
+        MonsterController.Instance.Load(
+            SaveLoadData.Instance.SaveData.MonsterAttack,
+            SaveLoadData.Instance.SaveData.MonsterDefend,
+            SaveLoadData.Instance.SaveData.MonsterHPmax);
     }
 
     private IEnumerator TurnExchange()
@@ -69,10 +103,19 @@ public class GameController : MonoBehaviour
 
     public void ClearStage()
     {
+        SaveLoadData.Instance.SaveData.StageLevel++;
         PlayerController.Instance.AddEXP();
-
         //UI Update
         //Field Update
+
+        if (!mAutoTurnToggle.isOn)
+        {
+            mTurnExitPanel.gameObject.SetActive(true);
+        }
+        else
+        {
+            SpawnInGame();
+        }
     }
 
     public void SceneExitButton()
@@ -82,6 +125,8 @@ public class GameController : MonoBehaviour
 
     public void SceneExitYesBtn()
     {
+        //SaveLoadData.Instance.Save();
+
         SceneManager.LoadScene("Lobby");
     }
 

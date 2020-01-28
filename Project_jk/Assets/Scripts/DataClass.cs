@@ -75,3 +75,13 @@ public class CardData
     public int ID;
     public string Contents;
 }
+
+public class SaveData
+{
+    public int[] PlayerLevel;
+    public int StageLevel;
+    public double[] MonsterAttack;
+    public double[] MonsterDefend;
+    public double[] MonsterHPmax;
+    public int[] CardID;
+}

@@ -69,4 +69,9 @@ public class Monster : MonoBehaviour
 
         UIController.Instance.ShowMonsterGaugeBar(mHPcurrent, mHPmax);
     }
+
+    public void SetFalseDeadMonster()
+    {
+        gameObject.SetActive(false);
+    }
 }

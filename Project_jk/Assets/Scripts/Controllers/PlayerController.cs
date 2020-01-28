@@ -44,6 +44,11 @@ public class PlayerController : DataLoader
 
     private string[] mDataDummy;
 
+    private bool bIsSpawnFinish;
+    public bool IsSpawnFinish { get { return bIsSpawnFinish; } }
+
+    private int[] Levels;
+
     private void Awake()
     {
         if(Instance == null)
@@ -88,6 +93,7 @@ public class PlayerController : DataLoader
         mHPcurrent = mHPmax;
 
         mOriginalHPmax = mHPmax;
+        bIsSpawnFinish = false;
     }
 
     public void SpawnPlayers()
@@ -108,6 +114,7 @@ public class PlayerController : DataLoader
             mPlayerSpawnedList.Add(player);
         }
 
+        bIsSpawnFinish = true;
         UIController.Instance.ShowPlayerGaugeBar(mHPcurrent, mHPmax);
     }
 
@@ -263,21 +270,28 @@ public class PlayerController : DataLoader
                 mPlayerDataArr[i].EXPcurrent = overExp;
                 mPlayerDataArr[i].EXPmax *= mPlayerDataArr[i].Level;
 
-                mPlayerDataArr[i].Attack = mPlayerDataArr[i].AttackBase * Math.Pow(mPlayerDataArr[i].AttackWeight, mPlayerDataArr[i].Level - 1);
-                mPlayerDataArr[i].Defend = mPlayerDataArr[i].DefendBase * Math.Pow(mPlayerDataArr[i].DefendWeight, mPlayerDataArr[i].Level - 1);
-                mPlayerDataArr[i].Heal = mPlayerDataArr[i].HealBase * Math.Pow(mPlayerDataArr[i].HealWeight, mPlayerDataArr[i].Level - 1);
+                CalculateStatus(i);
 
-                mPlayerDataArr[i].HPmax = mPlayerDataArr[i].HPbase * Math.Pow(mPlayerDataArr[i].HPWeight, mPlayerDataArr[i].Level - 1);
-                mPlayerDataArr[i].HPcurrent = mPlayerDataArr[i].HPmax;
-
-                mPlayerSpawnedList[i].Renew(
-                    mPlayerDataArr[i].Attack,
-                    mPlayerDataArr[i].Defend,
-                    mPlayerDataArr[i].Heal,
-                    mPlayerDataArr[i].HPmax,
-                    mPlayerDataArr[i].HPcurrent);
+                Levels[i] = mPlayerDataArr[i].Level;
             }
         }
+    }
+
+    private void CalculateStatus(int i)
+    {
+        mPlayerDataArr[i].Attack = mPlayerDataArr[i].AttackBase * Math.Pow(mPlayerDataArr[i].AttackWeight, mPlayerDataArr[i].Level - 1);
+        mPlayerDataArr[i].Defend = mPlayerDataArr[i].DefendBase * Math.Pow(mPlayerDataArr[i].DefendWeight, mPlayerDataArr[i].Level - 1);
+        mPlayerDataArr[i].Heal = mPlayerDataArr[i].HealBase * Math.Pow(mPlayerDataArr[i].HealWeight, mPlayerDataArr[i].Level - 1);
+
+        mPlayerDataArr[i].HPmax = mPlayerDataArr[i].HPbase * Math.Pow(mPlayerDataArr[i].HPWeight, mPlayerDataArr[i].Level - 1);
+        mPlayerDataArr[i].HPcurrent = mPlayerDataArr[i].HPmax;
+
+        mPlayerSpawnedList[i].Renew(
+            mPlayerDataArr[i].Attack,
+            mPlayerDataArr[i].Defend,
+            mPlayerDataArr[i].Heal,
+            mPlayerDataArr[i].HPmax,
+            mPlayerDataArr[i].HPcurrent);
     }
 
     public bool CheckAllBattleState()
@@ -340,6 +354,18 @@ public class PlayerController : DataLoader
                     mPlayerSpawnedList[i].Healing(mPlayerSpawnedList[i].HPmax * 0.3);
                 }
             }
+        }
+    }
+
+    public void Load(int[] levels)
+    {
+        Levels = levels;
+
+        for(int i = 0; i < mPlayerDataArr.Length; i++)
+        {
+            mPlayerDataArr[i].Level = levels[i];
+
+            CalculateStatus(i);
         }
     }
 }
