@@ -48,12 +48,8 @@ public class GameController : MonoBehaviour
 
             });
 
-
-        SpawnInGame();
-
         StartCoroutine(LoadData());
-
-        Debug.Log(StageLevel);
+        SpawnInGame();
     }
 
     public void SpawnInGame()

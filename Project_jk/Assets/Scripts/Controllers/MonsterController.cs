@@ -111,19 +111,14 @@ public class MonsterController : DataLoader
 
         for (int i = 0; i < mMonsterDataArr.Length; i++)
         {
-            CalculateStatus(i);
+            mMonsterDataArr[i].Attack += Math.Pow(mMonsterDataArr[i].AttackWeight, GameController.Instance.StageLevel);
+            mMonsterDataArr[i].Defend += Math.Pow(mMonsterDataArr[i].DefendWeight, GameController.Instance.StageLevel);
+            mMonsterDataArr[i].HPmax += Math.Pow(mMonsterDataArr[i].HPWeight, GameController.Instance.StageLevel);
 
             ATK[i] = mMonsterDataArr[i].Attack;
             DEF[i] = mMonsterDataArr[i].Defend;
             HPMAX[i] = mMonsterDataArr[i].HPmax;
         }
-    }
-
-    private void CalculateStatus(int i)
-    {
-        mMonsterDataArr[i].Attack += Math.Pow(mMonsterDataArr[i].AttackWeight, GameController.Instance.StageLevel);
-        mMonsterDataArr[i].Defend += Math.Pow(mMonsterDataArr[i].DefendWeight, GameController.Instance.StageLevel);
-        mMonsterDataArr[i].HPmax += Math.Pow(mMonsterDataArr[i].HPWeight, GameController.Instance.StageLevel);
     }
 
     public void EffectDEFbyCard(double value)
@@ -144,17 +139,37 @@ public class MonsterController : DataLoader
 
     public void Load(double[] atk, double[] def, double[] hp)
     {
+        if (atk[0] == -1)
+        {
+            for (int i = 0; i < mMonsterDataArr.Length; i++)
+            {
+                atk[i] = mMonsterDataArr[i].Attack;
+            }
+        }
+        if(def[0] == -1)
+        {
+            for (int i = 0; i < mMonsterDataArr.Length; i++)
+            {
+                def[i] = mMonsterDataArr[i].Defend;
+            }
+        }
+        if(hp[0] == -1)
+        {
+            for (int i = 0; i < mMonsterDataArr.Length; i++)
+            {
+                hp[i] = mMonsterDataArr[i].HPmax;
+            }
+        }
+
         ATK = atk;
         DEF = def;
         HPMAX = hp;
 
-        for(int i = 0; i < mMonsterDataArr.Length; i++)
+        for (int i = 0; i < mMonsterDataArr.Length; i++)
         {
             mMonsterDataArr[i].Attack = atk[i];
             mMonsterDataArr[i].Defend = def[i];
             mMonsterDataArr[i].HPmax = hp[i];
-
-            CalculateStatus(i);
         }
     }
 }

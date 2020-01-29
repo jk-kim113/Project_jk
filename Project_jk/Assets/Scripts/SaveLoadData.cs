@@ -72,6 +72,10 @@ public class SaveLoadData : MonoBehaviour
             mSaveData.MonsterDefend = new double[StaticValue.MONSTER_LENGTH];
             mSaveData.MonsterHPmax = new double[StaticValue.MONSTER_LENGTH];
 
+            mSaveData.MonsterAttack[0] = -1;
+            mSaveData.MonsterDefend[0] = -1;
+            mSaveData.MonsterHPmax[0] = -1;
+
             mSaveData.CardID = new int[StaticValue.CARD_ID_LENGTH];
         }
 
@@ -83,6 +87,11 @@ public class SaveLoadData : MonoBehaviour
         if(mSaveData.PlayerLevel == null)
         {
             mSaveData.PlayerLevel = new int[StaticValue.PLAYER_LEVEL_LENGTH];
+
+            for (int i = 0; i < mSaveData.PlayerLevel.Length; i++)
+            {
+                mSaveData.PlayerLevel[i] = 1;
+            }
         }
         else if(mSaveData.PlayerLevel.Length < StaticValue.PLAYER_LEVEL_LENGTH)
         {
@@ -98,6 +107,7 @@ public class SaveLoadData : MonoBehaviour
         if (mSaveData.MonsterAttack == null)
         {
             mSaveData.MonsterAttack = new double[StaticValue.MONSTER_LENGTH];
+            mSaveData.MonsterAttack[0] = -1;
         }
         else if (mSaveData.MonsterAttack.Length < StaticValue.MONSTER_LENGTH)
         {
@@ -113,6 +123,7 @@ public class SaveLoadData : MonoBehaviour
         if (mSaveData.MonsterDefend == null)
         {
             mSaveData.MonsterDefend = new double[StaticValue.MONSTER_LENGTH];
+            mSaveData.MonsterDefend[0] = -1;
         }
         else if (mSaveData.MonsterDefend.Length < StaticValue.MONSTER_LENGTH)
         {
@@ -128,6 +139,7 @@ public class SaveLoadData : MonoBehaviour
         if (mSaveData.MonsterHPmax == null)
         {
             mSaveData.MonsterHPmax = new double[StaticValue.MONSTER_LENGTH];
+            mSaveData.MonsterHPmax[0] = -1;
         }
         else if (mSaveData.MonsterHPmax.Length < StaticValue.MONSTER_LENGTH)
         {
