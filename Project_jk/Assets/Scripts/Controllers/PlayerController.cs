@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PlayerController : DataLoader
+public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
 
@@ -42,8 +42,6 @@ public class PlayerController : DataLoader
     private double mPlayerAtk;
     public double PlayerAtk { get { return mPlayerAtk; } }
 
-    private string[] mDataDummy;
-
     private bool bIsSpawnFinish;
     public bool IsSpawnFinish { get { return bIsSpawnFinish; } }
 
@@ -60,32 +58,7 @@ public class PlayerController : DataLoader
             Destroy(gameObject);
         }
 
-        mDataDummy = LoadCsvData("CSVFiles/PlayerData");
-        mPlayerDataArr = new PlayerData[mDataDummy.Length - 2];
-        for(int i = 0; i < mPlayerDataArr.Length; i++)
-        {
-            string[] splited = mDataDummy[i + 1].Split(',');
-            mPlayerDataArr[i] = new PlayerData();
-            mPlayerDataArr[i].Name = splited[0];
-            mPlayerDataArr[i].ID = int.Parse(splited[1]);
-            mPlayerDataArr[i].Level = int.Parse(splited[2]);
-            mPlayerDataArr[i].EXPcurrent = double.Parse(splited[3]);
-            mPlayerDataArr[i].EXPmax = double.Parse(splited[4]);
-            mPlayerDataArr[i].Attack = double.Parse(splited[5]);
-            mPlayerDataArr[i].Defend = double.Parse(splited[6]);
-            mPlayerDataArr[i].Heal = double.Parse(splited[7]);
-            mPlayerDataArr[i].AttackBase = double.Parse(splited[8]);
-            mPlayerDataArr[i].AttackWeight = double.Parse(splited[9]);
-            mPlayerDataArr[i].DefendBase = double.Parse(splited[10]);
-            mPlayerDataArr[i].DefendWeight = double.Parse(splited[11]);
-            mPlayerDataArr[i].HealBase = double.Parse(splited[12]);
-            mPlayerDataArr[i].HealWeight = double.Parse(splited[13]);
-            mPlayerDataArr[i].HPmax = double.Parse(splited[14]);
-            mPlayerDataArr[i].HPcurrent = double.Parse(splited[15]);
-            mPlayerDataArr[i].HPbase = double.Parse(splited[16]);
-            mPlayerDataArr[i].HPWeight = double.Parse(splited[17]);
-            mPlayerDataArr[i].BattleType = (eBattleType)int.Parse(splited[18]);
-        }
+        mPlayerDataArr = LoadOriginFiles.Instance.GetDataToPlayerController();
 
         mPlayerSpawnedList = new List<Player>();
 
@@ -98,6 +71,12 @@ public class PlayerController : DataLoader
 
     public void SpawnPlayers()
     {
+        mTotalAtk = 0;
+        mPlayerAtk = 0;
+        mTotalDef = 0;
+        mTotalHeal = 0;
+        UIController.Instance.ShowTotalStatus(mTotalAtk, mTotalDef, mTotalHeal);
+
         mPlayerSpawnedList.Clear();
 
         for (int i = 0; i < mPlayerDataArr.Length; i++)
@@ -226,6 +205,8 @@ public class PlayerController : DataLoader
 
     public void TotalStatus(eBattleType state, double value)
     {
+        value = Math.Round(value);
+
         switch (state)
         {
             case eBattleType.Attack:
@@ -247,6 +228,8 @@ public class PlayerController : DataLoader
 
     public void SubtractStatus(eBattleType state, double value)
     {
+        value = Math.Round(value);
+
         switch (state)
         {
             case eBattleType.Attack:
@@ -292,8 +275,11 @@ public class PlayerController : DataLoader
         mPlayerDataArr[i].Attack = mPlayerDataArr[i].AttackBase * Math.Pow(mPlayerDataArr[i].AttackWeight, mPlayerDataArr[i].Level - 1);
         mPlayerDataArr[i].Defend = mPlayerDataArr[i].DefendBase * Math.Pow(mPlayerDataArr[i].DefendWeight, mPlayerDataArr[i].Level - 1);
         mPlayerDataArr[i].Heal = mPlayerDataArr[i].HealBase * Math.Pow(mPlayerDataArr[i].HealWeight, mPlayerDataArr[i].Level - 1);
-
         mPlayerDataArr[i].HPmax = mPlayerDataArr[i].HPbase * Math.Pow(mPlayerDataArr[i].HPWeight, mPlayerDataArr[i].Level - 1);
+
+        mPlayerDataArr[i].Attack = Math.Round(mPlayerDataArr[i].Attack);
+        mPlayerDataArr[i].Defend = Math.Round(mPlayerDataArr[i].Defend);
+        mPlayerDataArr[i].HPmax = Math.Round(mPlayerDataArr[i].HPmax);
         mPlayerDataArr[i].HPcurrent = mPlayerDataArr[i].HPmax;
 
         mPlayerSpawnedList[i].Renew(

@@ -68,6 +68,8 @@ public class GameController : MonoBehaviour
         PlayerController.Instance.SpawnPlayers();
 
         mTurnExitPanel.gameObject.SetActive(false);
+
+        UIController.Instance.ShowStageLevel(StageLevel);
     }
 
     private IEnumerator LoadData()
@@ -79,6 +81,7 @@ public class GameController : MonoBehaviour
             yield return one;
         }
 
+        SaveLoadData.Instance.Load();
         PlayerController.Instance.Load(SaveLoadData.Instance.SaveData.PlayerLevel);
         MonsterController.Instance.Load(
             SaveLoadData.Instance.SaveData.MonsterAttack,
@@ -133,7 +136,7 @@ public class GameController : MonoBehaviour
 
     public void SceneExitYesBtn()
     {
-        //SaveLoadData.Instance.Save();
+        SaveLoadData.Instance.Save();
 
         SceneManager.LoadScene("Lobby");
     }

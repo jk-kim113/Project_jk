@@ -37,15 +37,16 @@ public class SaveLoadData : MonoBehaviour
         formatter.Serialize(stream, mSaveData);
 
         string data = Convert.ToBase64String(stream.GetBuffer());
-
-        PlayerPrefs.SetString("SaveData", data);
+        
+        PlayerPrefs.SetString("SaveAllData", data);
         stream.Close();
     }
 
 
     public void Load()
     {
-        string data = PlayerPrefs.GetString("SaveData");
+        //PlayerPrefs.DeleteAll();
+        string data = PlayerPrefs.GetString("SaveAllData");
 
         if(!string.IsNullOrEmpty(data))
         {
@@ -57,7 +58,6 @@ public class SaveLoadData : MonoBehaviour
         }
         else
         {
-            Debug.Log("No Save Data");
             mSaveData = new SaveData();
             mSaveData.PlayerLevel = new int[StaticValue.PLAYER_LEVEL_LENGTH];
 
@@ -72,11 +72,19 @@ public class SaveLoadData : MonoBehaviour
             mSaveData.MonsterDefend = new double[StaticValue.MONSTER_LENGTH];
             mSaveData.MonsterHPmax = new double[StaticValue.MONSTER_LENGTH];
 
-            mSaveData.MonsterAttack[0] = -1;
-            mSaveData.MonsterDefend[0] = -1;
-            mSaveData.MonsterHPmax[0] = -1;
+            for (int i = 0; i < mSaveData.MonsterAttack.Length; i++)
+            {
+                mSaveData.MonsterAttack[i] = -1;
+                mSaveData.MonsterDefend[i] = -1;
+                mSaveData.MonsterHPmax[i] = -1;
+            }
 
             mSaveData.CardID = new int[StaticValue.CARD_ID_LENGTH];
+            
+            for (int i = 0; i < mSaveData.CardID.Length; i++)
+            {
+                mSaveData.CardID[i] = -1;
+            }
         }
 
         FixSaveDataForUpdate();
@@ -155,6 +163,11 @@ public class SaveLoadData : MonoBehaviour
         if (mSaveData.CardID == null)
         {
             mSaveData.CardID = new int[StaticValue.CARD_ID_LENGTH];
+
+            for (int i = 0; i < mSaveData.CardID.Length; i++)
+            {
+                mSaveData.CardID[i] = -1;
+            }
         }
         else if (mSaveData.CardID.Length < StaticValue.CARD_ID_LENGTH)
         {
@@ -170,6 +183,6 @@ public class SaveLoadData : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        //Save();
+        Save();
     }
 }

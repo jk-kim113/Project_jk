@@ -76,6 +76,7 @@ public class CardData
     public string Contents;
 }
 
+[System.Serializable]
 public class SaveData
 {
     public int[] PlayerLevel;

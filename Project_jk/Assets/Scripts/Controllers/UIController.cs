@@ -24,6 +24,8 @@ public class UIController : MonoBehaviour
     private Text mFieldInfoText;
     [SerializeField]
     private Text mCardConstentsText;
+    [SerializeField]
+    private Text mStageLevelText;
 #pragma warning restore
 
     private Text[] mPlayerInfoText;
@@ -102,5 +104,10 @@ public class UIController : MonoBehaviour
     public void ShowCardData(string cardContents)
     {
         mCardConstentsText.text = cardContents;
+    }
+
+    public void ShowStageLevel(int value)
+    {
+        mStageLevelText.text = value.ToString();
     }
 }

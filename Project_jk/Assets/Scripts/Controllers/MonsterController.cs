@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class MonsterController : DataLoader
+public class MonsterController : MonoBehaviour
 {
     public static MonsterController Instance;
 
@@ -19,8 +19,6 @@ public class MonsterController : DataLoader
 
     private int mMonsterIndex;
     private Monster mMonsterSpawned;
-
-    private string[] mDataDummy;
 
     private bool bIsSpawnFinish;
     public bool IsSpawnFinish { get { return bIsSpawnFinish; } }
@@ -40,22 +38,7 @@ public class MonsterController : DataLoader
             Destroy(gameObject);
         }
 
-        mDataDummy = LoadCsvData("CSVFiles/MonsterData");
-        mMonsterDataArr = new MonsterData[mDataDummy.Length - 2];
-        for(int i = 0; i < mMonsterDataArr.Length; i++)
-        {
-            string[] splited = mDataDummy[i + 1].Split(',');
-            mMonsterDataArr[i] = new MonsterData();
-            mMonsterDataArr[i].Name = splited[0];
-            mMonsterDataArr[i].ID = int.Parse(splited[1]);
-            mMonsterDataArr[i].Attack = double.Parse(splited[2]);
-            mMonsterDataArr[i].Defend = double.Parse(splited[3]);
-            mMonsterDataArr[i].HPmax = double.Parse(splited[4]);
-            mMonsterDataArr[i].HPcurrent = double.Parse(splited[5]);
-            mMonsterDataArr[i].AttackWeight = double.Parse(splited[6]);
-            mMonsterDataArr[i].DefendWeight = double.Parse(splited[7]);
-            mMonsterDataArr[i].HPWeight = double.Parse(splited[8]);
-        }
+        mMonsterDataArr = LoadOriginFiles.Instance.GetDataToMonsterController();
 
         bIsSpawnFinish = false;
     }
@@ -139,21 +122,21 @@ public class MonsterController : DataLoader
 
     public void Load(double[] atk, double[] def, double[] hp)
     {
-        if (atk[0] == -1)
+        if (atk[0] < 0)
         {
             for (int i = 0; i < mMonsterDataArr.Length; i++)
             {
                 atk[i] = mMonsterDataArr[i].Attack;
             }
         }
-        if(def[0] == -1)
+        if(def[0] < 0)
         {
             for (int i = 0; i < mMonsterDataArr.Length; i++)
             {
                 def[i] = mMonsterDataArr[i].Defend;
             }
         }
-        if(hp[0] == -1)
+        if(hp[0] < 0)
         {
             for (int i = 0; i < mMonsterDataArr.Length; i++)
             {
