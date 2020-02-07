@@ -5,9 +5,13 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {   
     private int mID, mLevel;
+    private string mName;
     private double mATK, mDEF, mHEAL, mHPmax, mHPcurrent;
+    public int ID { get { return mID; } }
+    public string Name { get { return mName; } }
     public double ATK { get { return mATK;} set { mATK = value;}}
     public double DEF { get { return mDEF;} set { mDEF = value;}}
+    public double HEAL { get { return mHEAL; } }
     public double HPmax { get { return mHPmax;}}
     public double HPcurrent { get { return mHPcurrent;}}
 
@@ -45,10 +49,11 @@ public class Player : MonoBehaviour
         mStartPos = transform.position;
     }
 
-    public void Initialize(int id, int level, double atk, double def, double heal, double hpmax, double hpcurrent, eBattleType battletype)
+    public void Initialize(int id, int level, string name, double atk, double def, double heal, double hpmax, double hpcurrent, eBattleType battletype)
     {   
         mID = id;
         mLevel = level;
+        mName = name;
         Renew(atk, def, heal, hpmax, hpcurrent);
         mBattleType = battletype;
     }
@@ -85,6 +90,36 @@ public class Player : MonoBehaviour
         }
 
         mHPcurrent += value;
+
+        if(mHPcurrent >= mHPmax)
+        {
+            mHPcurrent = mHPmax;
+        }
+    }
+
+    public void WearEquipment(eEquipType equiptype, double value)
+    {
+        switch(equiptype)
+        {
+            case eEquipType.Attack:
+
+                mATK += value;
+
+                break;
+            case eEquipType.Defend:
+
+                mDEF += value;
+
+                break;
+            case eEquipType.Heal:
+
+                mHEAL += value;
+
+                break;
+            default:
+                Debug.LogError("Wrong EquipType : " + equiptype);
+                break;
+        }
     }
 
     public void MoveChange()

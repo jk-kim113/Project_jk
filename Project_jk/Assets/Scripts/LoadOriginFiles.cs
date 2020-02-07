@@ -9,6 +9,8 @@ public class LoadOriginFiles : DataLoader
     private PlayerData[] mPlayerDataArr;
     private MonsterData[] mMonsterDataArr;
     private CardData[] mCardDataArr;
+    private ItemData[] mItemDataArr;
+    private EquipData[] mEquipDataArr;
 
     private void Awake()
     {
@@ -26,6 +28,8 @@ public class LoadOriginFiles : DataLoader
         LoadPlayerOriginFile();
         LoadMonsterOriginFile();
         LoadCardOriginFile();
+        LoadItemOriginData();
+        LoadEquipOriginData();
     }
 
     public PlayerData[] GetDataToPlayerController()
@@ -41,6 +45,16 @@ public class LoadOriginFiles : DataLoader
     public CardData[] GetDataToCardController()
     {
         return mCardDataArr;
+    }
+
+    public ItemData[] LoadItemDataArr()
+    {
+        return mItemDataArr;
+    }
+
+    public EquipData[] LoadEquipDataArr()
+    {
+        return mEquipDataArr;
     }
 
     private void LoadPlayerOriginFile()
@@ -120,5 +134,60 @@ public class LoadOriginFiles : DataLoader
         mCardDataArr[5] = new CardData();
         mCardDataArr[5].ID = 5;
         mCardDataArr[5].Contents = "대기중인 플레이어의 체력이 50%이하이면 최대체력의 30%를 회복";
+    }
+
+    private void LoadItemOriginData()
+    {
+        mItemDataArr = new ItemData[3];
+
+        mItemDataArr[0] = new ItemData();
+        mItemDataArr[0].Name = "체력 회복(소)";
+        mItemDataArr[0].ID = 11;
+        mItemDataArr[0].Info = "플레이어의 체력을 {0}만큼 회복";
+        mItemDataArr[0].Value = 10;
+        mItemDataArr[0].Cost = 50;
+
+        mItemDataArr[1] = new ItemData();
+        mItemDataArr[1].Name = "체력 회복(중)";
+        mItemDataArr[1].ID = 12;
+        mItemDataArr[1].Info = "플레이어의 체력을 {0}만큼 회복";
+        mItemDataArr[1].Value = 50;
+        mItemDataArr[1].Cost = 250;
+
+        mItemDataArr[2] = new ItemData();
+        mItemDataArr[2].Name = "체력 회복(대)";
+        mItemDataArr[2].ID = 13;
+        mItemDataArr[2].Info = "플레이어의 체력을 {0}만큼 회복";
+        mItemDataArr[2].Value = 100;
+        mItemDataArr[2].Cost = 500;
+    }
+
+    private void LoadEquipOriginData()
+    {
+        mEquipDataArr = new EquipData[3];
+
+        mEquipDataArr[0] = new EquipData();
+        mEquipDataArr[0].Name = "낡은 장검";
+        mEquipDataArr[0].ID = 21;
+        mEquipDataArr[0].Info = "장착 시 공격력이 {0}상승";
+        mEquipDataArr[0].Value = 3;
+        mEquipDataArr[0].Cost = 500;
+        mEquipDataArr[0].EquipType = eEquipType.Attack;
+
+        mEquipDataArr[1] = new EquipData();
+        mEquipDataArr[1].Name = "낡은 가죽";
+        mEquipDataArr[1].ID = 22;
+        mEquipDataArr[1].Info = "장착 시 방어력이 {0}상승";
+        mEquipDataArr[1].Value = 3;
+        mEquipDataArr[1].Cost = 500;
+        mEquipDataArr[1].EquipType = eEquipType.Defend;
+
+        mEquipDataArr[2] = new EquipData();
+        mEquipDataArr[2].Name = "낡은 지팡이";
+        mEquipDataArr[2].ID = 23;
+        mEquipDataArr[2].Info = "장착 시 힐량이 {0}상승";
+        mEquipDataArr[2].Value = 3;
+        mEquipDataArr[2].Cost = 500;
+        mEquipDataArr[2].EquipType = eEquipType.Heal;
     }
 }

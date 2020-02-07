@@ -62,9 +62,9 @@ public class GameController : MonoBehaviour
         PlayerController.Instance.SetActiveFalse();
         MonsterController.Instance.SetActiveFalse();
 
-        CardEffectController.Instance.SpawnCardEffect();
         FieldController.Instance.SpawnField();
         MonsterController.Instance.SpawnMonster();
+        CardEffectController.Instance.SpawnCardEffect();
         PlayerController.Instance.SpawnPlayers();
 
         mTurnExitPanel.gameObject.SetActive(false);
@@ -116,7 +116,6 @@ public class GameController : MonoBehaviour
     {
         SaveLoadData.Instance.SaveData.StageLevel++;
         PlayerController.Instance.AddEXP();
-        //UI Update
         //Field Update
 
         if (!mAutoTurnToggle.isOn)
@@ -127,6 +126,16 @@ public class GameController : MonoBehaviour
         {
             SpawnInGame();
         }
+    }
+
+    public void ShowItemInventory()
+    {
+        InventoryController.Instance.OpenItemInventory();
+    }
+
+    public void ShowEquipInventory()
+    {
+        InventoryController.Instance.OpenEquipInventory();
     }
 
     public void SceneExitButton()

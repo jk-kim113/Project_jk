@@ -15,6 +15,11 @@ public class LobbyController : MonoBehaviour
         SceneManager.LoadScene("Card");
     }
 
+    public void ShopButton()
+    {
+        SceneManager.LoadScene("Shop");
+    }
+
     public void ExitButton()
     {
         SceneManager.LoadScene("Title");

@@ -15,7 +15,31 @@ public class DataPassing : MonoBehaviour
     public CardData[] CardData { get { return mCardData; } }
 
     private int mCardSaveCount;
-    
+
+    public StaticValue.VoidCallBack mGoldConsumeCallBack;
+
+    public double Gold
+    {
+        get { return SaveLoadData.Instance.SaveData.Gold; }
+        set
+        {
+            if (value >= 0)
+            {
+                if (SaveLoadData.Instance.SaveData.Gold > value)
+                {
+                    mGoldConsumeCallBack?.Invoke();
+                    mGoldConsumeCallBack = null;
+                }
+
+                SaveLoadData.Instance.SaveData.Gold = value;
+            }
+            else
+            {
+                Debug.Log("Not enough Money");
+            }
+        }
+    }
+
     private void Awake()
     {
         if(Instance == null)

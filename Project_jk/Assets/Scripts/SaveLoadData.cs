@@ -68,6 +68,8 @@ public class SaveLoadData : MonoBehaviour
 
             mSaveData.StageLevel = 1;
 
+            mSaveData.Gold = 50000;
+
             mSaveData.MonsterAttack = new double[StaticValue.MONSTER_LENGTH];
             mSaveData.MonsterDefend = new double[StaticValue.MONSTER_LENGTH];
             mSaveData.MonsterHPmax = new double[StaticValue.MONSTER_LENGTH];
@@ -84,6 +86,20 @@ public class SaveLoadData : MonoBehaviour
             for (int i = 0; i < mSaveData.CardID.Length; i++)
             {
                 mSaveData.CardID[i] = -1;
+            }
+
+            mSaveData.ItemNum = new int[StaticValue.ITEM_NUM_LENGTH];
+
+            for(int i = 0; i < mSaveData.ItemNum.Length; i++)
+            {
+                mSaveData.ItemNum[i] = 0;
+            }
+
+            mSaveData.EquipNum = new int[StaticValue.EQUIP_NUM_LENGTH];
+
+            for(int i = 0; i < mSaveData.EquipNum.Length; i++)
+            {
+                mSaveData.EquipNum[i] = 0;
             }
         }
 
@@ -178,6 +194,46 @@ public class SaveLoadData : MonoBehaviour
             }
 
             mSaveData.CardID = temp;
+        }
+
+        if (mSaveData.ItemNum == null)
+        {
+            mSaveData.ItemNum = new int[StaticValue.ITEM_NUM_LENGTH];
+
+            for (int i = 0; i < mSaveData.ItemNum.Length; i++)
+            {
+                mSaveData.ItemNum[i] = 0;
+            }
+        }
+        else if (mSaveData.ItemNum.Length < StaticValue.ITEM_NUM_LENGTH)
+        {
+            int[] temp = new int[StaticValue.ITEM_NUM_LENGTH];
+            for (int i = 0; i < mSaveData.ItemNum.Length; i++)
+            {
+                temp[i] = mSaveData.ItemNum[i];
+            }
+
+            mSaveData.ItemNum = temp;
+        }
+
+        if (mSaveData.EquipNum == null)
+        {
+            mSaveData.EquipNum = new int[StaticValue.EQUIP_NUM_LENGTH];
+
+            for (int i = 0; i < mSaveData.EquipNum.Length; i++)
+            {
+                mSaveData.EquipNum[i] = 0;
+            }
+        }
+        else if (mSaveData.EquipNum.Length < StaticValue.EQUIP_NUM_LENGTH)
+        {
+            int[] temp = new int[StaticValue.EQUIP_NUM_LENGTH];
+            for (int i = 0; i < mSaveData.EquipNum.Length; i++)
+            {
+                temp[i] = mSaveData.EquipNum[i];
+            }
+
+            mSaveData.EquipNum = temp;
         }
     }
 

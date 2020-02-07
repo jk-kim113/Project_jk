@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 #pragma warning restore
 
     private List<Player> mPlayerSpawnedList;
+    public List<Player> PlayerSpawnedList { get { return mPlayerSpawnedList; } }
 
     private PlayerData[] mPlayerDataArr;
 
@@ -86,6 +87,7 @@ public class PlayerController : MonoBehaviour
             player.Initialize(
                 mPlayerDataArr[i].ID,
                 mPlayerDataArr[i].Level,
+                mPlayerDataArr[i].Name,
                 mPlayerDataArr[i].Attack,
                 mPlayerDataArr[i].Defend,
                 mPlayerDataArr[i].Heal,
@@ -351,6 +353,16 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ConsumeItem(int playerID, double value)
+    {
+        mPlayerSpawnedList[playerID].Healing(value);
+    }
+
+    public void EquipItem(int playerID, int equipID, eEquipType equiptype,double value)
+    {
+        mPlayerSpawnedList[playerID].WearEquipment(equiptype, value);
     }
 
     public void Load(int[] levels)

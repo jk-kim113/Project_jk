@@ -23,6 +23,19 @@ public enum eFieldType
     Poison
 }
 
+public enum eShopItemType
+{
+    Consume,
+    Equip
+}
+
+public enum eEquipType
+{
+    Attack,
+    Defend,
+    Heal
+}
+
 public class PlayerData
 {
     public string Name;
@@ -76,13 +89,35 @@ public class CardData
     public string Contents;
 }
 
+public class ItemData
+{
+    public string Name;
+    public int ID;
+    public string Info;
+    public double Value;
+    public double Cost;
+}
+
+public class EquipData
+{
+    public string Name;
+    public int ID;
+    public string Info;
+    public double Value;
+    public double Cost;
+    public eEquipType EquipType;
+}
+
 [System.Serializable]
 public class SaveData
 {
     public int[] PlayerLevel;
     public int StageLevel;
+    public double Gold;
     public double[] MonsterAttack;
     public double[] MonsterDefend;
     public double[] MonsterHPmax;
     public int[] CardID;
+    public int[] ItemNum;
+    public int[] EquipNum;
 }
