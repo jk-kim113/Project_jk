@@ -120,4 +120,5 @@ public class SaveData
     public int[] CardID;
     public int[] ItemNum;
     public int[] EquipNum;
+    public List<int[]> PlayerEquip;
 }

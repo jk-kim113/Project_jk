@@ -101,6 +101,18 @@ public class SaveLoadData : MonoBehaviour
             {
                 mSaveData.EquipNum[i] = 0;
             }
+
+            mSaveData.PlayerEquip = new List<int[]>(StaticValue.PLAYER_LEVEL_LENGTH);
+
+            for(int i = 0; i < mSaveData.PlayerEquip.Count; i++)
+            {
+                mSaveData.PlayerEquip[i] = new int[StaticValue.EQUIP_NUM_LENGTH];
+
+                for (int j = 0; j < mSaveData.PlayerEquip[i].Length; j++)
+                {
+                    mSaveData.PlayerEquip[i][j] = -1;
+                }
+            }
         }
 
         FixSaveDataForUpdate();

@@ -67,6 +67,8 @@ public class GameController : MonoBehaviour
         CardEffectController.Instance.SpawnCardEffect();
         PlayerController.Instance.SpawnPlayers();
 
+        InventoryController.Instance.SpawnInven();
+
         mTurnExitPanel.gameObject.SetActive(false);
 
         UIController.Instance.ShowStageLevel(StageLevel);

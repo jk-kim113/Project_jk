@@ -30,15 +30,12 @@ public class InventoryController : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    public void SpawnInven()
     {
         mItemData = LoadOriginFiles.Instance.LoadItemDataArr();
         mEquipData = LoadOriginFiles.Instance.LoadEquipDataArr();
         mPlayerList = PlayerController.Instance.PlayerSpawnedList;
-    }
 
-    private void Start()
-    {
         mItemInventory.ShowItemInven(mPlayerList, mItemData);
         mEquipInventory.ShowItemInven(mPlayerList, mEquipData);
     }
@@ -51,7 +48,7 @@ public class InventoryController : MonoBehaviour
 
     public void OpenEquipInventory()
     {
-        mEquipInventory.gameObject.SetActive(true);
+        //mEquipInventory.gameObject.SetActive(true);
         mEquipInventory.OpenPanel();
     }
 

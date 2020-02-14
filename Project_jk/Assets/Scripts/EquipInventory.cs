@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EquipInventory : MonoBehaviour
 {
@@ -8,9 +9,11 @@ public class EquipInventory : MonoBehaviour
     [SerializeField]
     private ApplyInvenElement mApplyInven;
     [SerializeField]
-    private Transform mApplyInvenPos;
+    private Transform mApplyInvenPos, mInvenPos;
     [SerializeField]
-    private BattleInvenElePool mItemElePool;
+    private BattleInvenElement mInvenPrefab;
+    [SerializeField]
+    private Image mEquipPanel;
 #pragma warning restore
 
     private List<Player> mPlayerList;
@@ -34,7 +37,7 @@ public class EquipInventory : MonoBehaviour
         {
             if (SaveLoadData.Instance.SaveData.EquipNum[i] > 0)
             {
-                BattleInvenElement inven = mItemElePool.GetFromPool(0);
+                BattleInvenElement inven = Instantiate(mInvenPrefab, mInvenPos);
                 inven.Init(
                     null,
                     mEquipDataArr[i].ID,
@@ -45,8 +48,6 @@ public class EquipInventory : MonoBehaviour
                     ArrangePlayer);
 
                 mEquiplist.Add(inven);
-
-                mEquiplist[i].gameObject.SetActive(false);
             }
         }
 
@@ -64,37 +65,28 @@ public class EquipInventory : MonoBehaviour
                 ApplyItem);
 
             mApplyInvenList.Add(apply);
-
-            mApplyInvenList[i].gameObject.SetActive(false);
         }
     }
 
     public void OpenPanel()
     {
-        for (int i = 0; i < mEquiplist.Count; i++)
-        {
-            mEquiplist[i].gameObject.SetActive(true);
-        }
+        mEquipPanel.gameObject.SetActive(true);
     }
 
     private void ApplyItem(int id)
     {
         InventoryController.Instance.ApplyEquipItem(id, mEquipDataArr[mSelectedEquipID - 21].EquipType, mSelectedEquipID - 21);
-        SaveLoadData.Instance.SaveData.ItemNum[mSelectedEquipID - 21]--;
+
+        SaveLoadData.Instance.SaveData.EquipNum[mSelectedEquipID - 21]--;
 
         mApplyInvenList[id].Renew(mPlayerList[id].HPcurrent, mPlayerList[id].HPmax);
 
-        mEquiplist[mSelectedEquipID - 21].Renew(SaveLoadData.Instance.SaveData.ItemNum[mSelectedEquipID - 21]);
+        mEquiplist[mSelectedEquipID - 21].Renew(SaveLoadData.Instance.SaveData.EquipNum[mSelectedEquipID - 21]);
     }
 
     private void ArrangePlayer(int id)
     {
         mSelectedEquipID = id;
-
-        for (int i = 0; i < mApplyInvenList.Count; i++)
-        {
-            mApplyInvenList[i].gameObject.SetActive(true);
-        }
     }
 
     public void ExitButton()

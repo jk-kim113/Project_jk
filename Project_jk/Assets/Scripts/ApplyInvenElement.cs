@@ -20,7 +20,7 @@ public class ApplyInvenElement : MonoBehaviour
         mDefText.text = "Def : " + UnitBuilder.GetUnitStr(def);
         mHealText.text = "Heal : " + UnitBuilder.GetUnitStr(heal);
 
-        mApplyButton.onClick.AddListener(() => callback(id));
+        mApplyButton.onClick.AddListener(() => { callback(id); });
     }
 
     public void Renew(double hpcurrent, double hpmax)
